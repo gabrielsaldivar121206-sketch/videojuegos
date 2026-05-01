@@ -1,0 +1,314 @@
+/* =============================================
+   NAVBAR BASE
+   ============================================= */
+.navbar {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 9999;
+  width: 100%;
+  padding: 0 40px;
+  background: transparent;
+  transition: background 0.4s cubic-bezier(0.25,1,0.5,1),
+              backdrop-filter 0.4s ease,
+              box-shadow 0.4s ease;
+}
+
+.navbar-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 10px 0;
+}
+
+/* =============================================
+   LEFT - Logo
+   ============================================= */
+.navbar-left { display: flex; align-items: center; }
+
+.logo {
+  display: flex; align-items: center; gap: 8px;
+  text-decoration: none;
+}
+.logo-icon {
+  color: #00f3ff;
+  filter: drop-shadow(0 0 6px rgba(0,243,255,0.5));
+  transition: filter 0.3s;
+}
+.logo:hover .logo-icon { filter: drop-shadow(0 0 12px rgba(0,243,255,0.9)); }
+.logo-text {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: white;
+  letter-spacing: 1.5px;
+}
+
+/* =============================================
+   CENTER
+   ============================================= */
+.navbar-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+  max-width: 750px;
+}
+
+/* Mini links row */
+.top-mini-links {
+  display: flex;
+  gap: 22px;
+  margin-bottom: 5px;
+  transition: transform 0.45s cubic-bezier(0.25,1,0.5,1),
+              opacity 0.35s ease,
+              max-height 0.45s cubic-bezier(0.25,1,0.5,1),
+              margin 0.4s ease;
+  opacity: 1;
+  transform: translateY(0);
+  max-height: 30px;
+  overflow: hidden;
+}
+.top-mini-links a {
+  color: #ffffff;
+  font-size: 0.85rem;
+  font-weight: 500;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: color 0.25s;
+}
+.top-mini-links a:hover { color: #00f3ff; }
+
+/* =============================================
+   PLATFORM / SEARCH CONTAINER
+   ============================================= */
+.platform-search-container {
+  display: flex;
+  align-items: center;
+  background: rgba(255,255,255,0.07);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-radius: 40px;
+  padding: 0 4px 0 20px;
+  height: 42px;
+  border: 1px solid rgba(255,255,255,0.07);
+  transition: all 0.4s cubic-bezier(0.25,1,0.5,1);
+  width: 460px;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Platforms list */
+.platforms-list {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  margin-right: 12px;
+  white-space: nowrap;
+  flex: 1;
+  transition: opacity 0.25s ease, transform 0.25s ease;
+  opacity: 1;
+  transform: translateX(0);
+}
+.platform-item {
+  display: flex; align-items: center; gap: 5px;
+  color: #ffffff;
+  font-weight: 500;
+  font-size: 0.86rem;
+  cursor: pointer;
+  font-family: 'Outfit', sans-serif;
+  transition: color 0.2s, transform 0.2s;
+}
+.platform-item:hover { color: #00f3ff; transform: translateY(-1px); }
+
+/* Search form (hidden by default) */
+.search-inline-form {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  gap: 8px;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateX(20px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  position: absolute;
+  left: 16px;
+  right: 4px;
+}
+.search-inline-input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: white;
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.9rem;
+  caret-color: #00f3ff;
+}
+.search-inline-input::placeholder { color: rgba(255,255,255,0.4); }
+
+.search-advanced-btn {
+  background: transparent;
+  border: 1px solid rgba(255,255,255,0.2);
+  color: rgba(255,255,255,0.7);
+  padding: 5px 14px;
+  border-radius: 30px;
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.78rem;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s;
+}
+.search-advanced-btn:hover { border-color: #00f3ff; color: #00f3ff; }
+
+.search-close-btn {
+  background: rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,255,255,0.15);
+  color: white;
+  width: 30px; height: 30px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: all 0.2s;
+}
+.search-close-btn:hover {
+  background: rgba(255,60,60,0.15);
+  border-color: rgba(255,60,60,0.4);
+  color: #ff5555;
+}
+
+/* ── ACTIVE SEARCH STATE ── */
+.platform-search-container.search-active {
+  background: linear-gradient(90deg,
+    rgba(0,200,230,0.18) 0%,
+    rgba(0,150,200,0.14) 100%
+  );
+  border-color: rgba(0,243,255,0.45);
+  box-shadow: 0 0 25px rgba(0,243,255,0.15);
+  width: 540px;
+}
+.platform-search-container.search-active .platforms-list {
+  opacity: 0;
+  pointer-events: none;
+  transform: translateX(-15px);
+}
+.platform-search-container.search-active .search-inline-form {
+  opacity: 1;
+  pointer-events: all;
+  transform: translateX(0);
+}
+
+/* Magnifying glass button */
+.search-submit-btn {
+  background: #00f3ff;
+  border: none;
+  width: 42px; height: 42px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  color: #0b0c10;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: all 0.3s cubic-bezier(0.25,1,0.5,1);
+  box-shadow: 0 0 14px rgba(0,243,255,0.45);
+}
+.search-submit-btn:hover {
+  background: #33f7ff;
+  transform: scale(1.08);
+  box-shadow: 0 0 22px rgba(0,243,255,0.7);
+}
+
+/* =============================================
+   SCROLLED - "Sube y Baja"
+   ============================================= */
+.navbar.scrolled {
+  background: rgba(9,9,14,0.93);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  box-shadow: 0 1px 0 rgba(0,243,255,0.07), 0 4px 20px rgba(0,0,0,0.5);
+}
+.navbar.scrolled .top-mini-links {
+  opacity: 0;
+  transform: translateY(-18px);
+  max-height: 0;
+  margin-bottom: -4px;
+  pointer-events: none;
+}
+.navbar.scrolled .platform-search-container {
+  background: transparent;
+  border-color: transparent;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  padding-left: 0;
+}
+.navbar.scrolled .platform-search-container.search-active {
+  background: linear-gradient(90deg, rgba(0,200,230,0.18), rgba(0,150,200,0.14));
+  border-color: rgba(0,243,255,0.45);
+}
+
+/* =============================================
+   RIGHT - Cart + User
+   ============================================= */
+.navbar-right { display: flex; align-items: center; gap: 12px; }
+
+.nav-icon-btn {
+  background: transparent;
+  border: 1px solid rgba(255,255,255,0.1);
+  color: white;
+  width: 42px; height: 42px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.25s ease;
+}
+.nav-icon-btn:hover {
+  background: rgba(0,243,255,0.08);
+  border-color: rgba(0,243,255,0.4);
+  color: #00f3ff;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 14px rgba(0,243,255,0.15);
+}
+.cart-badge-ig {
+  position: absolute; top: -4px; right: -4px;
+  background: #00f3ff; color: #0b0c10;
+  font-size: 0.68rem; font-weight: bold;
+  width: 18px; height: 18px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 0 8px rgba(0,243,255,0.5);
+}
+
+/* =============================================
+   RESPONSIVE
+   ============================================= */
+@media (max-width: 1024px) { .platforms-list { display: none; } }
+@media (max-width: 768px) {
+  .navbar { padding: 0 20px; }
+  .top-mini-links { display: none; }
+  .platform-search-container { width: 200px; }
+}
+
+/* Avatar del usuario logueado */
+.nav-user-avatar-btn {
+  background: transparent;
+  border: 2px solid var(--accent-cyan, #00e5ff);
+  border-radius: 50%;
+  padding: 2px;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.nav-user-avatar-btn:hover {
+  transform: scale(1.08);
+  box-shadow: 0 0 10px rgba(0, 229, 255, 0.4);
+}
+
+.nav-avatar-img {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+  display: block;
+}

@@ -1,0 +1,57 @@
+.notfound-page {
+  min-height: 80vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 100px 40px 40px; /* Padding-top extra para evitar la navbar fija */
+}
+
+.notfound-content {
+  max-width: 500px;
+}
+
+.notfound-code {
+  font-size: 9rem;
+  font-weight: 900;
+  font-family: 'Outfit', sans-serif;
+  background: linear-gradient(135deg, #00e5ff, #0050aa);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  line-height: 1;
+  margin-bottom: 10px;
+}
+
+.notfound-icon {
+  color: var(--accent-cyan, #00e5ff);
+  margin-bottom: 20px;
+}
+
+.notfound-content h1 {
+  color: #fff;
+  font-family: 'Outfit', sans-serif;
+  font-size: 2rem;
+  margin: 0 0 16px;
+}
+
+.notfound-content p {
+  color: #888;
+  font-size: 1rem;
+  line-height: 1.6;
+  margin-bottom: 30px;
+}
+
+.notfound-btn {
+  display: inline-block;
+  background: linear-gradient(90deg, #00e5ff, #0099aa);
+  color: #0b0c10;
+  padding: 13px 32px;
+  border-radius: 8px;
+  font-weight: 700;
+  text-decoration: none;
+  font-family: 'Outfit', sans-serif;
+  font-size: 1rem;
+  transition: opacity 0.2s;
+}
+.notfound-btn:hover { opacity: 0.9; }

@@ -1,0 +1,134 @@
+.latest-reviews-section {
+  padding: 30px 0;
+  margin-bottom: 40px;
+}
+
+.lr-header {
+  margin-bottom: 20px;
+}
+
+.lr-title {
+  color: #fff;
+  font-family: 'Inter', sans-serif;
+  font-size: 1.35rem;
+  font-weight: 400;
+  letter-spacing: 0.2px;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.lr-title:hover {
+  color: var(--accent-cyan);
+}
+
+.lr-arrow-icon {
+  color: #555;
+  margin-left: 8px;
+  transition: color 0.2s;
+}
+
+.lr-title:hover .lr-arrow-icon {
+  color: var(--accent-cyan);
+}
+
+.lr-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+}
+
+.lr-card {
+  background-color: #27272a;
+  border-radius: 8px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.lr-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+}
+
+.lr-image {
+  width: 100%;
+  height: 120px;
+  overflow: hidden;
+}
+
+.lr-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.lr-card:hover .lr-image img {
+  transform: scale(1.05);
+}
+
+.lr-content {
+  padding: 20px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.lr-user-info {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 15px;
+}
+
+.lr-avatar {
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  overflow: hidden;
+  background-color: #111;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.lr-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.lr-thumb {
+  stroke-width: 2.5;
+}
+
+.lr-thumb.positive {
+  color: #4CAF50;
+}
+
+.lr-thumb.negative {
+  color: #F44336;
+}
+
+.lr-text {
+  color: #999;
+  font-size: 0.85rem;
+  line-height: 1.5;
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+@media (max-width: 992px) {
+  .lr-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 576px) {
+  .lr-grid {
+    grid-template-columns: 1fr;
+  }
+}

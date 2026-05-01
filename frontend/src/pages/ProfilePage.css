@@ -1,0 +1,200 @@
+.profile-page {
+  padding: 60px 15px;
+  min-height: 80vh;
+}
+
+/* === Hero / Header del perfil === */
+.profile-hero {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  background: #16161a;
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 16px;
+  padding: 32px;
+  margin-bottom: 30px;
+  position: relative;
+}
+
+.profile-avatar-wrap {
+  position: relative;
+  flex-shrink: 0;
+}
+
+.profile-avatar {
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid var(--accent-cyan, #00e5ff);
+}
+
+.profile-status-dot {
+  position: absolute;
+  bottom: 4px;
+  right: 4px;
+  width: 14px;
+  height: 14px;
+  background: #4caf50;
+  border-radius: 50%;
+  border: 2px solid #16161a;
+}
+
+.profile-info {
+  flex: 1;
+}
+
+.profile-name {
+  color: #fff;
+  font-family: 'Outfit', sans-serif;
+  font-size: 1.6rem;
+  font-weight: 700;
+  margin: 0 0 4px;
+}
+
+.profile-email {
+  color: #666;
+  font-size: 0.88rem;
+  margin: 0 0 12px;
+}
+
+.profile-badges {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.badge {
+  padding: 3px 12px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.badge-member {
+  background: rgba(0, 229, 255, 0.1);
+  color: var(--accent-cyan, #00e5ff);
+  border: 1px solid rgba(0, 229, 255, 0.3);
+}
+
+.badge-buyer {
+  background: rgba(76, 175, 80, 0.1);
+  color: #4caf50;
+  border: 1px solid rgba(76, 175, 80, 0.3);
+}
+
+.btn-logout {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: transparent;
+  border: 1px solid rgba(255, 83, 112, 0.3);
+  color: #ff5370;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  position: absolute;
+  top: 24px;
+  right: 24px;
+}
+.btn-logout:hover {
+  background: rgba(255, 83, 112, 0.1);
+}
+
+/* === Stats === */
+.profile-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-bottom: 30px;
+}
+
+.stat-card {
+  background: #16161a;
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 12px;
+  padding: 24px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  transition: border-color 0.2s;
+}
+
+.stat-card:hover {
+  border-color: rgba(0, 229, 255, 0.3);
+}
+
+.stat-icon {
+  color: var(--accent-cyan, #00e5ff);
+}
+
+.stat-number {
+  color: #fff;
+  font-size: 2rem;
+  font-weight: 700;
+  font-family: 'Outfit', sans-serif;
+}
+
+.stat-label {
+  color: #666;
+  font-size: 0.8rem;
+}
+
+/* === Secciones === */
+.profile-sections {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+
+.profile-section {
+  background: #16161a;
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 16px;
+  padding: 28px;
+}
+
+.profile-section h2 {
+  color: #fff;
+  font-family: 'Outfit', sans-serif;
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin: 0 0 20px;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 30px 0;
+}
+
+.empty-state p {
+  color: #555;
+  font-size: 0.9rem;
+  margin-bottom: 16px;
+}
+
+.btn-explore {
+  background: linear-gradient(90deg, #00e5ff, #0099aa);
+  color: #0b0c10;
+  border: none;
+  padding: 10px 22px;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+.btn-explore:hover { opacity: 0.9; }
+
+@media (max-width: 768px) {
+  .profile-hero { flex-direction: column; text-align: center; }
+  .btn-logout { position: static; margin-top: 10px; }
+  .profile-stats { grid-template-columns: 1fr; }
+  .profile-sections { grid-template-columns: 1fr; }
+}

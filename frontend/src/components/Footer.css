@@ -1,0 +1,221 @@
+/* Footer - Instant Gaming Style */
+.footer-ig {
+  background-color: #0b0c10;
+  color: #fff;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  padding: 40px 0 0;
+  font-family: 'Inter', sans-serif;
+  margin-top: 60px;
+}
+
+.footer-content-ig {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 40px;
+  padding-bottom: 40px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* Trustpilot Column */
+.footer-trustpilot-ig {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.trustpilot-logo {
+  font-size: 22px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.trustpilot-logo .star-icon {
+  color: #00b67a;
+  font-size: 28px;
+}
+
+.trustpilot-stars {
+  display: flex;
+  gap: 2px;
+}
+
+.star-box {
+  background-color: #00b67a;
+  color: white;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+}
+
+.star-box.half {
+  background: linear-gradient(90deg, #00b67a 50%, rgba(255,255,255,0.2) 50%);
+}
+
+.trustpilot-score {
+  font-size: 13px;
+  color: #aaa;
+  margin-top: 5px;
+}
+
+.trustpilot-score .underline {
+  text-decoration: underline;
+  cursor: pointer;
+  color: #fff;
+}
+
+/* Links Column */
+.footer-links-ig {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.footer-links-ig a {
+  color: #ccc;
+  text-decoration: none;
+  font-size: 14px;
+  transition: color 0.2s;
+}
+
+.footer-links-ig a:hover {
+  color: #fff;
+}
+
+/* Community Column */
+.footer-community-ig h4 {
+  font-size: 16px;
+  font-weight: 500;
+  margin-bottom: 15px;
+  color: #fff;
+}
+
+.social-icons-ig {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 25px;
+}
+
+.social-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #1a1a1e;
+  color: #aaa;
+  text-decoration: none;
+  transition: all 0.2s;
+}
+
+.social-btn:hover {
+  color: #fff;
+  background-color: #333;
+}
+
+.social-btn.discord:hover { background-color: #5865F2; }
+.social-btn.twitter:hover { background-color: #1DA1F2; }
+.social-btn.instagram:hover { background-color: #E1306C; }
+.social-btn.facebook:hover { background-color: #4267B2; }
+.social-btn.youtube:hover { background-color: #FF0000; }
+.social-btn.twitch:hover { background-color: #9146FF; }
+
+.app-store-btns {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.store-btn {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background-color: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 6px;
+  padding: 6px 12px;
+  color: #fff;
+  text-decoration: none;
+  transition: border-color 0.2s;
+  min-width: 140px;
+}
+
+.store-btn:hover {
+  border-color: rgba(255, 255, 255, 0.4);
+}
+
+.store-icon {
+  font-size: 24px;
+}
+
+.store-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.store-text small {
+  font-size: 9px;
+  color: #aaa;
+  line-height: 1;
+  margin-bottom: 2px;
+}
+
+.store-text strong {
+  font-size: 13px;
+  line-height: 1;
+  font-weight: 600;
+}
+
+/* Bottom Bar */
+.footer-bottom-ig {
+  padding: 20px 0;
+  background-color: #0b0c10;
+}
+
+.bottom-content-ig {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 13px;
+  color: #777;
+}
+
+.footer-settings-ig {
+  display: flex;
+  gap: 20px;
+}
+
+.settings-btn {
+  background: none;
+  border: none;
+  color: #ccc;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  cursor: pointer;
+  font-size: 13px;
+  padding: 0;
+}
+
+.settings-btn:hover {
+  color: #fff;
+}
+
+@media (max-width: 992px) {
+  .footer-content-ig {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+  
+  .bottom-content-ig {
+    flex-direction: column;
+    gap: 15px;
+    text-align: center;
+  }
+}

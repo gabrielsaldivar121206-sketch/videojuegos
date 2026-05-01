@@ -1,0 +1,120 @@
+/* =============================================
+   TRUST BAR - Instant Gaming Style
+   ============================================= */
+.trust-bar {
+  background: #222228;
+  border-top: 1px solid rgba(255,255,255,0.05);
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+  padding: 22px 40px;
+  width: 100%;
+  margin-top: 20px;
+  margin-bottom: 40px;
+}
+
+.trust-bar-inner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Individual trust item */
+.trust-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 0 50px;
+  flex: 1;
+}
+
+.trust-divider {
+  width: 1px;
+  height: 40px;
+  background: rgba(255,255,255,0.08);
+  flex-shrink: 0;
+}
+
+.trust-icon {
+  color: var(--accent-cyan, #00f3ff);
+  flex-shrink: 0;
+  opacity: 0.85;
+}
+
+.trust-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.trust-title {
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: white;
+}
+
+.trust-sub {
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.8rem;
+  color: #888;
+}
+
+/* Trustpilot section */
+.trustpilot-item {
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 5px;
+}
+
+.trustpilot-logo {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.tp-star-icon {
+  color: #00b67a;
+  font-size: 1.2rem;
+  line-height: 1;
+}
+
+.tp-name {
+  font-family: 'Outfit', sans-serif;
+  font-size: 1rem;
+  font-weight: 600;
+  color: white;
+}
+
+.tp-stars {
+  display: flex;
+  gap: 3px;
+  align-items: center;
+}
+
+.tp-score {
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.72rem;
+  color: #888;
+}
+
+.tp-score strong {
+  color: #ccc;
+}
+
+.tp-reviews {
+  color: #888;
+  text-decoration: underline;
+  cursor: pointer;
+  font-size: 0.72rem;
+}
+
+@media (max-width: 900px) {
+  .trust-bar-inner {
+    flex-direction: column;
+    gap: 20px;
+  }
+  .trust-divider { display: none; }
+  .trust-item { padding: 0; }
+}
