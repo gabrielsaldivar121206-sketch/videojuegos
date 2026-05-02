@@ -111,10 +111,40 @@
 }
 
 @media (max-width: 900px) {
-  .trust-bar-inner {
-    flex-direction: column;
-    gap: 20px;
+  .trust-bar {
+    padding: 20px 10px;
   }
-  .trust-divider { display: none; }
-  .trust-item { padding: 0; }
+  .trust-bar-inner {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px 10px;
+  }
+  .trust-divider { 
+    display: none; 
+  }
+  .trust-item { 
+    padding: 0; 
+    gap: 8px;
+  }
+  .trust-icon {
+    width: 24px;
+    height: 24px;
+  }
+  .trust-title {
+    font-size: 0.8rem;
+    line-height: 1.2;
+  }
+  .trust-sub {
+    font-size: 0.65rem;
+    line-height: 1.2;
+  }
+  .trustpilot-item {
+    gap: 2px;
+  }
+  .tp-name {
+    font-size: 0.8rem;
+  }
+  .tp-score, .tp-reviews {
+    font-size: 0.65rem;
+  }
 }

@@ -68,7 +68,7 @@ const AuthModal = ({ onClose }) => {
         <div className="auth-header">
           <div className="auth-logo">🎮</div>
           <h2>{mode === 'login' ? 'Iniciar Sesión' : 'Crear Cuenta'}</h2>
-          <p>{mode === 'login' ? 'Accede a tu biblioteca de juegos' : 'Únete a Nexus Gaming'}</p>
+          <p>{mode === 'login' ? 'Accede a tu biblioteca de juegos' : 'Únete a Vento Gaming'}</p>
         </div>
 
         <button className="btn-google" onClick={handleGoogle} disabled={loading}>

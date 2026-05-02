@@ -103,7 +103,7 @@ const Navbar = () => {
         <div className="navbar-left">
           <a href="/" className="logo">
             <Gamepad2 size={26} className="logo-icon" />
-            <span className="logo-text">NEXUS GAMING</span>
+            <span className="logo-text">VENTO GAMING</span>
           </a>
         </div>
 
@@ -233,6 +233,29 @@ const Navbar = () => {
           )}
         </div>
 
+      </div>
+
+      {/* MOBILE PLATFORMS BAR (Only visible on mobile) */}
+      <div className="platforms-mobile-bar">
+        {[
+          { name: 'PC',          icon: <Monitor size={16} /> },
+          { name: 'PlayStation', icon: <PSIcon /> },
+          { name: 'Xbox',        icon: <XboxSVG /> },
+          { name: 'Nintendo',    icon: <NintendoSVG /> },
+        ].map(p => {
+          const isActive = activePlatform === p.name;
+          const colors = PLATFORM_COLORS[p.name];
+          return (
+            <button
+              key={p.name}
+              className={`platform-item ${isActive ? 'platform-item-active' : ''}`}
+              style={isActive ? { background: colors.bg, color: colors.text, borderRadius: '30px', padding: '4px 14px' } : {}}
+              onClick={() => navigate(`/platform/${p.name}`)}
+            >
+              {p.icon} {p.name}
+            </button>
+          );
+        })}
       </div>
     </nav>
 

@@ -58,6 +58,8 @@ const GameGrid = () => {
         </h2>
       </div>
       
+
+      
       {!searchQuery && (
         <div className="filters-container flex gap-2 mb-4">
           {CATEGORIES.map(cat => (

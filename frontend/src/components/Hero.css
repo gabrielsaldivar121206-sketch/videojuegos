@@ -92,7 +92,43 @@
   }
   .hero {
     height: 50vh;
-    clip-path: polygon(0 0, 100% 0, 100% 90%, 0 100%);
-    margin-bottom: -10vh;
+    clip-path: none;
+    margin-top: 100px; /* Push below the solid navbar */
+    margin-bottom: 20px;
   }
+  .hero-content {
+    padding-top: 20px; /* Less offset needed since hero is pushed down */
+  }
+}
+
+
+/* ── CLICKABLE HERO ── */
+.hero-clickable {
+  cursor: pointer;
+}
+
+.hero-clickable .hero-bg img {
+  transition: transform 0.5s ease, filter 0.5s ease;
+}
+
+.hero-clickable:hover .hero-bg img {
+  transform: scale(1.03);
+  filter: brightness(0.88);
+}
+
+.hero-cta-hint {
+  display: inline-block;
+  margin-top: 16px;
+  color: rgba(0, 229, 255, 0.85);
+  font-size: 0.9rem;
+  font-weight: 500;
+  letter-spacing: 0.3px;
+  opacity: 0;
+  transform: translateX(-8px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.hero-clickable:hover .hero-cta-hint {
+  opacity: 1;
+  transform: translateX(0);
 }

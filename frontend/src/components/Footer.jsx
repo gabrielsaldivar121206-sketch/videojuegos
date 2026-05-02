@@ -73,7 +73,7 @@ const Footer = () => {
       
       <div className="footer-bottom-ig">
         <div className="container bottom-content-ig">
-          <p>Copyright © {new Date().getFullYear()} Nexus Gaming - All rights reserved</p>
+          <p>Copyright © {new Date().getFullYear()} Vento Gaming - All rights reserved</p>
           <div className="footer-settings-ig">
             <button className="settings-btn"><span>◎</span> Perú</button>
             <button className="settings-btn"><span>A文</span> Español</button>

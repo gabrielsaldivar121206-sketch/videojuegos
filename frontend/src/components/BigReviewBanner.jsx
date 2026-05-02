@@ -22,7 +22,7 @@ const BigReviewBanner = () => {
               <span className="star-icon">★</span>
             </div>
             <p className="banner-text">
-              Nexus Gaming es una plataforma increíble para comprar tus juegos de PC, PlayStation, Xbox y Switch más baratos.<br/>
+              Vento Gaming es una plataforma increíble para comprar tus juegos de PC, PlayStation, Xbox y Switch más baratos.<br/>
               ¡Con entrega inmediata 24/7, juega al instante al precio más bajo!
             </p>
             <button className="btn-review-cyan">1,576,479 reseñas de usuarios</button>

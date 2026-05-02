@@ -142,10 +142,14 @@ export const featuredGames = [
 ];
 
 export const heroGame = {
+  id: 15,
   title: "Pragmata",
   price: 32.89,
   discount: 45,
-  image: "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/3357650/341da3fa5338fad44ae87b2d14edfe6be80ff4c3/capsule_616x353.jpg?t=1777351016"
+  image: "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/3357650/341da3fa5338fad44ae87b2d14edfe6be80ff4c3/capsule_616x353.jpg?t=1777351016",
+  platform: "PC",
+  categories: ["Action", "Sci-Fi"],
+  isNew: true,
 };
 
 export const categoriesData = [
