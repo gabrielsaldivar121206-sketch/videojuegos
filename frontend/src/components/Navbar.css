@@ -7,8 +7,11 @@
   z-index: 9999;
   width: 100%;
   padding: 0 40px;
-  background: transparent;
-  transition: background 0.4s cubic-bezier(0.25,1,0.5,1),
+  background-image: linear-gradient(to bottom, rgba(9,9,14,0.85) 0%, rgba(9,9,14,0) 100%);
+  background-color: transparent;
+  backdrop-filter: blur(0px);
+  -webkit-backdrop-filter: blur(0px);
+  transition: background-color 0.4s ease,
               backdrop-filter 0.4s ease,
               box-shadow 0.4s ease;
 }
@@ -89,13 +92,13 @@
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border-radius: 40px;
-  padding: 0 4px 0 20px;
-  height: 42px;
+  padding: 0 6px 0 20px;
+  height: 46px;
   border: 1px solid rgba(255,255,255,0.07);
   transition: all 0.4s cubic-bezier(0.25,1,0.5,1);
   width: 460px;
   position: relative;
-  overflow: hidden;
+  overflow: visible;
 }
 
 /* Platforms list */
@@ -118,9 +121,16 @@
   font-size: 0.86rem;
   cursor: pointer;
   font-family: 'Outfit', sans-serif;
-  transition: color 0.2s, transform 0.2s;
+  transition: color 0.2s, transform 0.2s, background 0.2s;
+  background: transparent;
+  border: none;
+  outline: none;
+  padding: 4px 8px;
+  border-radius: 30px;
 }
 .platform-item:hover { color: #00f3ff; transform: translateY(-1px); }
+.platform-item-active { font-weight: 700; }
+.platform-item-active:hover { transform: none; }
 
 /* Search form (hidden by default) */
 .search-inline-form {
@@ -181,13 +191,11 @@
 
 /* ── ACTIVE SEARCH STATE ── */
 .platform-search-container.search-active {
-  background: linear-gradient(90deg,
-    rgba(0,200,230,0.18) 0%,
-    rgba(0,150,200,0.14) 100%
-  );
+  background: linear-gradient(90deg, rgba(0,200,230,0.18) 0%, rgba(0,150,200,0.14) 100%);
   border-color: rgba(0,243,255,0.45);
   box-shadow: 0 0 25px rgba(0,243,255,0.15);
   width: 540px;
+  overflow: visible; /* Para que se vea el dropdown */
 }
 .platform-search-container.search-active .platforms-list {
   opacity: 0;
@@ -223,7 +231,8 @@
    SCROLLED - "Sube y Baja"
    ============================================= */
 .navbar.scrolled {
-  background: rgba(9,9,14,0.93);
+  background-color: rgba(9,9,14,0.85);
+  background-image: none;
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   box-shadow: 0 1px 0 rgba(0,243,255,0.07), 0 4px 20px rgba(0,0,0,0.5);
@@ -245,6 +254,70 @@
 .navbar.scrolled .platform-search-container.search-active {
   background: linear-gradient(90deg, rgba(0,200,230,0.18), rgba(0,150,200,0.14));
   border-color: rgba(0,243,255,0.45);
+}
+
+/* ── SEARCH DROPDOWN ── */
+.search-dropdown {
+  position: absolute;
+  top: calc(100% + 5px);
+  left: 0;
+  width: 100%;
+  background: #333333;
+  border-radius: 8px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  z-index: 1000;
+  border: 1px solid #444;
+}
+.search-dropdown-item {
+  display: flex;
+  align-items: center;
+  padding: 10px 15px;
+  border-bottom: 1px solid #444;
+  cursor: pointer;
+  transition: background 0.2s;
+  text-decoration: none;
+  color: white;
+}
+.search-dropdown-item:last-child {
+  border-bottom: none;
+}
+.search-dropdown-item:hover {
+  background: #444444;
+}
+.search-dropdown-item img {
+  width: 60px;
+  height: 35px;
+  object-fit: cover;
+  border-radius: 4px;
+  margin-right: 15px;
+}
+.search-dropdown-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+.search-dropdown-title {
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+.search-dropdown-platform {
+  font-size: 0.75rem;
+  color: #aaa;
+}
+.search-dropdown-price {
+  font-weight: bold;
+  font-size: 0.95rem;
+  color: #fff;
+}
+.search-dropdown-empty {
+  padding: 20px;
+  text-align: center;
+  color: #aaa;
+  font-size: 0.9rem;
 }
 
 /* =============================================

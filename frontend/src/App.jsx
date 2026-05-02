@@ -20,6 +20,8 @@ import AdminDashboard from './pages/AdminDashboard';
 import CheckoutPage from './pages/CheckoutPage';
 import SuccessPage from './pages/SuccessPage';
 import NotFound from './pages/NotFound';
+import ExplorePage from './pages/ExplorePage';
+import PlatformPage from './pages/PlatformPage';
 import { useSearchParams } from 'react-router-dom';
 
 const Home = () => {
@@ -54,6 +56,8 @@ const AppContent = () => {
       <main className="main-content">
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/explore" element={<ExplorePage />} />
+          <Route path="/platform/:platform" element={<PlatformPage />} />
           <Route path="/game/:id" element={<GameDetails />} />
           <Route path="/perfil" element={<ProfilePage />} />
           <Route path="/checkout" element={<CheckoutPage />} />

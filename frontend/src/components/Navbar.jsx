@@ -2,7 +2,10 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Gamepad2, Search, ShoppingCart, User, Monitor, X as XIcon } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
-import { useSearchParams, useNavigate } from 'react-router-dom';
+import { useSearchParams, useNavigate, useLocation } from 'react-router-dom';
+import { collection, getDocs } from 'firebase/firestore';
+import { db } from '../firebase';
+import { featuredGames as fallbackGames, PLATFORM_COLORS } from '../data/games';
 import AuthModal from './AuthModal';
 import './Navbar.css';
 
@@ -32,6 +35,26 @@ const Navbar = () => {
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState(searchParams.get('q') || '');
   const searchInputRef = useRef(null);
+  const [games, setGames] = useState([]);
+  const location = useLocation();
+  const platformMatch = location.pathname.match(/^\/platform\/(.+)$/);
+  const activePlatform = platformMatch ? decodeURIComponent(platformMatch[1]) : null;
+
+  useEffect(() => {
+    const fetchGames = async () => {
+      try {
+        const snap = await getDocs(collection(db, 'games'));
+        if (!snap.empty) {
+          setGames(snap.docs.map(doc => ({ id: doc.id, ...doc.data() })));
+        } else {
+          setGames(fallbackGames);
+        }
+      } catch (err) {
+        setGames(fallbackGames);
+      }
+    };
+    fetchGames();
+  }, []);
 
   useEffect(() => {
     setSearchTerm(searchParams.get('q') || '');
@@ -53,28 +76,22 @@ const Navbar = () => {
   const handleSearchSubmit = (e) => {
     e.preventDefault();
     if (searchTerm.trim()) {
-      navigate(`/?q=${encodeURIComponent(searchTerm)}`);
-    } else {
-      navigate('/');
+      const searchResults = games.filter(g => g.title.toLowerCase().includes(searchTerm.toLowerCase()));
+      if (searchResults.length > 0) {
+        navigate(`/game/${searchResults[0].id}`);
+        closeSearch();
+      }
     }
-    setIsSearchOpen(false);
   };
 
   const handleSearchChange = (e) => {
-    const value = e.target.value;
-    setSearchTerm(value);
-    
-    if (value.trim()) {
-      navigate(`/?q=${encodeURIComponent(value)}`);
-    } else {
-      navigate('/');
-    }
+    setSearchTerm(e.target.value);
   };
 
   const closeSearch = () => {
     setIsSearchOpen(false);
     setSearchTerm('');
-    navigate('/');
+    // Optionally navigate away or stay, usually closing search doesn't change route.
   };
 
   return (
@@ -104,10 +121,25 @@ const Navbar = () => {
           <div className={`platform-search-container ${isSearchOpen ? 'search-active' : ''}`}>
             {/* Platforms list - hidden when search open */}
             <div className="platforms-list">
-              <span className="platform-item"><Monitor size={16} /> PC</span>
-              <span className="platform-item"><PSIcon /> PlayStation</span>
-              <span className="platform-item"><XboxSVG /> Xbox</span>
-              <span className="platform-item"><NintendoSVG /> Nintendo</span>
+              {[
+                { name: 'PC',          icon: <Monitor size={16} /> },
+                { name: 'PlayStation', icon: <PSIcon /> },
+                { name: 'Xbox',        icon: <XboxSVG /> },
+                { name: 'Nintendo',    icon: <NintendoSVG /> },
+              ].map(p => {
+                const isActive = activePlatform === p.name;
+                const colors = PLATFORM_COLORS[p.name];
+                return (
+                  <button
+                    key={p.name}
+                    className={`platform-item ${isActive ? 'platform-item-active' : ''}`}
+                    style={isActive ? { background: colors.bg, color: colors.text, borderRadius: '30px', padding: '4px 14px' } : {}}
+                    onClick={() => navigate(`/platform/${p.name}`)}
+                  >
+                    {p.icon} {p.name}
+                  </button>
+                );
+              })}
             </div>
 
             {/* Search form - shown when search open */}
@@ -130,6 +162,31 @@ const Navbar = () => {
                 <XIcon size={16} />
               </button>
             </form>
+
+            {/* Dropdown Results */}
+            {isSearchOpen && searchTerm.trim() && (
+              <div className="search-dropdown">
+                {games.filter(g => g.title.toLowerCase().includes(searchTerm.toLowerCase())).slice(0, 5).map(game => {
+                  const price = game.discount > 0 ? (game.price * (1 - game.discount/100)).toFixed(2) : Number(game.price || 0).toFixed(2);
+                  return (
+                    <div key={game.id} className="search-dropdown-item" onClick={() => {
+                      navigate(`/game/${game.id}`);
+                      closeSearch();
+                    }}>
+                      <img src={game.image} alt={game.title} />
+                      <div className="search-dropdown-info">
+                        <span className="search-dropdown-title">{game.title}</span>
+                        <span className="search-dropdown-platform">{game.categories?.[0] || 'Steam'}</span>
+                      </div>
+                      <div className="search-dropdown-price">{price} €</div>
+                    </div>
+                  );
+                })}
+                {games.filter(g => g.title.toLowerCase().includes(searchTerm.toLowerCase())).length === 0 && (
+                  <div className="search-dropdown-empty">No se encontraron resultados</div>
+                )}
+              </div>
+            )}
 
             {/* The magnifying glass button - morphs position */}
             {!isSearchOpen && (

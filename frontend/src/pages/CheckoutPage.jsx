@@ -6,13 +6,14 @@ import { ShoppingCart, Lock, Trash2, ArrowLeft, ShieldCheck } from 'lucide-react
 import { loadStripe } from '@stripe/stripe-js';
 import { Elements } from '@stripe/react-stripe-js';
 import CheckoutForm from '../components/CheckoutForm';
+import { featuredGames } from '../data/games';
 import './CheckoutPage.css';
 
 // Inicializar Stripe fuera del componente para no recrearlo en cada render
 const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY);
 
 const CheckoutPage = () => {
-  const { cartItems, removeFromCart, cartTotal } = useCart();
+  const { cartItems, removeFromCart, cartTotal, addToCart } = useCart();
   const { user } = useAuth();
   const navigate = useNavigate();
   
@@ -25,7 +26,7 @@ const CheckoutPage = () => {
         <ShoppingCart size={60} className="empty-icon" />
         <h2>Tu carrito está vacío</h2>
         <p>Añade juegos a tu cesta antes de proceder al pago.</p>
-        <Link to="/" className="btn-back-store">Ir a la tienda</Link>
+        <Link to="/explore" className="btn-back-store">Ir a la tienda</Link>
       </div>
     );
   }
@@ -100,6 +101,32 @@ const CheckoutPage = () => {
               </div>
             );
           })}
+
+          <div className="checkout-recommendations" style={{ marginTop: '40px' }}>
+            <h2 style={{ fontSize: '1.2rem', marginBottom: '20px' }}>Recomendados</h2>
+            {featuredGames.slice(0, 3).map(game => {
+              const recPrice = game.discount > 0 
+                ? (game.price * (1 - game.discount / 100)).toFixed(2) 
+                : game.price.toFixed(2);
+                
+              return (
+                <div key={`rec-${game.id}`} className="checkout-item rec-item" style={{ border: '1px solid rgba(255,255,255,0.05)', background: 'transparent' }}>
+                  <img src={game.image} alt={game.title} className="checkout-item-img" style={{ width: '100px', height: '60px', objectFit: 'cover' }} />
+                  <div className="checkout-item-info">
+                    <p className="checkout-item-title" style={{ fontSize: '0.95rem' }}>{game.title}</p>
+                    <p className="checkout-item-platform">Steam</p>
+                    <p style={{ marginTop: '6px', color: '#fff', fontWeight: '500', fontSize: '0.9rem' }}>{recPrice} €</p>
+                  </div>
+                  <button className="rec-add-btn" onClick={() => addToCart(game)} style={{
+                    background: 'transparent', border: '1px solid rgba(255,255,255,0.2)', color: '#ccc',
+                    width: '36px', height: '36px', borderRadius: '4px', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer'
+                  }}>
+                    <ShoppingCart size={16} />
+                  </button>
+                </div>
+              );
+            })}
+          </div>
         </div>
 
         {/* RIGHT - Summary */}

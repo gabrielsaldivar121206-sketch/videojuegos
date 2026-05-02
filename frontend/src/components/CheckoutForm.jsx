@@ -3,13 +3,17 @@ import { useStripe, useElements, PaymentElement } from '@stripe/react-stripe-js'
 import { useNavigate } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
 import { ShieldCheck } from 'lucide-react';
+import { doc, updateDoc, arrayUnion } from 'firebase/firestore';
+import { db } from '../firebase';
+import { useAuth } from '../context/AuthContext';
 import '../pages/CheckoutPage.css'; // Compartimos estilos
 
 const CheckoutForm = ({ totalAmount }) => {
   const stripe = useStripe();
   const elements = useElements();
   const navigate = useNavigate();
-  const { clearCart } = useCart();
+  const { cartItems, clearCart } = useCart();
+  const { user, refreshProfile } = useAuth();
   const [errorMessage, setErrorMessage] = useState(null);
   const [isProcessing, setIsProcessing] = useState(false);
 
@@ -32,6 +36,24 @@ const CheckoutForm = ({ totalAmount }) => {
       setIsProcessing(false);
     } else {
       // Pago exitoso!
+      try {
+        if (user) {
+          const userRef = doc(db, 'users', user.uid);
+          const gamesToAdd = cartItems.map(item => ({
+            id: item.id,
+            title: item.title,
+            image: item.image,
+            purchasedAt: new Date().toISOString()
+          }));
+          await updateDoc(userRef, {
+            library: arrayUnion(...gamesToAdd)
+          });
+          await refreshProfile();
+        }
+      } catch (err) {
+        console.error("Error al guardar en biblioteca:", err);
+      }
+      
       clearCart();
       navigate('/success');
     }

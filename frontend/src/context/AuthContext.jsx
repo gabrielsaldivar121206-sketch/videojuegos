@@ -70,6 +70,16 @@ export const AuthProvider = ({ children }) => {
 
   const logout = () => signOut(auth);
 
+  const refreshProfile = async () => {
+    if (user) {
+      const ref = doc(db, 'users', user.uid);
+      const updated = await getDoc(ref);
+      if (updated.exists()) {
+        setUserProfile(updated.data());
+      }
+    }
+  };
+
   const value = {
     user,
     userProfile,
@@ -77,7 +87,8 @@ export const AuthProvider = ({ children }) => {
     loginWithEmail,
     registerWithEmail,
     loginWithGoogle,
-    logout
+    logout,
+    refreshProfile
   };
 
   return (

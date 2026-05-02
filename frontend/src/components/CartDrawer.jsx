@@ -34,7 +34,7 @@ const CartDrawer = () => {
                 <ShoppingCart size={40} className="empty-cart-icon" />
               </div>
               <p>Tu carrito está vacío.</p>
-              <button className="btn-continue-shopping" onClick={toggleCart}>
+              <button className="btn-continue-shopping" onClick={() => { toggleCart(); navigate('/explore'); }}>
                 Explorar Juegos
               </button>
             </div>
