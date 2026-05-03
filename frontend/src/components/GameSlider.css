@@ -1,5 +1,6 @@
 .game-slider-section {
-  padding: 30px 0;
+  padding-top: 30px;
+  padding-bottom: 30px;
 }
 
 .slider-header {
@@ -45,6 +46,20 @@
 
 @media (max-width: 576px) {
   .slider-grid {
-    grid-template-columns: 1fr;
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    padding-bottom: 20px;
+    gap: 15px;
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  .slider-grid::-webkit-scrollbar {
+    display: none;
+  }
+
+  .slider-grid > * {
+    flex: 0 0 75%;
+    scroll-snap-align: start;
   }
 }

@@ -41,7 +41,7 @@ const GameSlider = ({ title, startIndex = 0, endIndex = 3 }) => {
       
       <div className="slider-grid">
         {games.map(game => (
-          <GameCard key={game.id} game={game} />
+          <GameCard key={game.id} game={game} isReserva={title.toLowerCase() === 'reservas'} />
         ))}
       </div>
     </section>

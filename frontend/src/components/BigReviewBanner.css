@@ -171,6 +171,20 @@
 
 @media (max-width: 576px) {
   .review-cards-container {
-    grid-template-columns: 1fr;
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    padding-bottom: 20px;
+    gap: 15px;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .review-cards-container::-webkit-scrollbar {
+    display: none;
+  }
+
+  .review-card-ig {
+    flex: 0 0 85%;
+    scroll-snap-align: start;
   }
 }

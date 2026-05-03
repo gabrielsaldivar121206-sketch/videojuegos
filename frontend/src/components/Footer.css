@@ -210,12 +210,29 @@
 @media (max-width: 992px) {
   .footer-content-ig {
     grid-template-columns: 1fr;
-    gap: 40px;
+    gap: 30px;
+    text-align: center;
+  }
+  
+  .footer-trustpilot-ig {
+    align-items: center;
+  }
+
+  .social-icons-ig {
+    justify-content: center;
+  }
+
+  .app-store-btns {
+    justify-content: center;
   }
   
   .bottom-content-ig {
     flex-direction: column;
     gap: 15px;
     text-align: center;
+  }
+
+  .footer-settings-ig {
+    justify-content: center;
   }
 }
