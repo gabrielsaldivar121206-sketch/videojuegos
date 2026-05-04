@@ -13,7 +13,7 @@ const Hero = () => {
   return (
     <section className="hero hero-clickable" id="store" onClick={handleHeroClick}>
       <div className="hero-bg">
-        <img src={heroGame.image} alt={heroGame.title} />
+        <img src="https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/3357650/341da3fa5338fad44ae87b2d14edfe6be80ff4c3/capsule_616x353.jpg?t=1777351016" alt={heroGame.title} />
         <div className="hero-overlay"></div>
       </div>
 
@@ -22,7 +22,7 @@ const Hero = () => {
           <h1 className="hero-title">{heroGame.title}</h1>
           <div className="hero-price-row flex items-center gap-2">
             <span className="hero-discount">-{heroGame.discount}%</span>
-              <span className="hero-price">S/ {heroGame.price.toFixed(2)}</span>
+            <span className="hero-price">S/ {heroGame.price.toFixed(2)}</span>
           </div>
           <span className="hero-cta-hint">Haz clic para ver el juego →</span>
         </div>
