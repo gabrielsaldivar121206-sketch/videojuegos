@@ -322,6 +322,7 @@
 @media (max-width: 900px) {
   .explore-page {
     flex-direction: column;
+    padding-top: 160px;
   }
   .explore-sidebar {
     display: none;

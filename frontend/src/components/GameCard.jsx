@@ -24,7 +24,7 @@ const GameCard = ({ game, isReserva }) => {
           {isDlc && <span className="dlc-badge-ig">DLC</span>}
           {game.title || 'Juego Desconocido'}
         </div>
-        <div className="game-price-ig-card">{safePrice} €</div>
+          <div className="game-price-ig-card">S/ {safePrice}</div>
       </div>
       {isReserva && (
         <div className="reserva-row-ig">

@@ -330,6 +330,7 @@
 
 /* ── RESPONSIVE ── */
 @media (max-width: 768px) {
+  .pp-header { padding-top: 160px; }
   .pp-title { font-size: 2rem; }
   .pp-hero-banner { aspect-ratio: 16/9; }
   .pp-game-grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); }

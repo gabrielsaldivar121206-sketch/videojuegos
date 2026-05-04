@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Gamepad2, Search, ShoppingCart, User, Monitor, X as XIcon } from 'lucide-react';
+import { Gamepad2, Search, ShoppingCart, User, X as XIcon } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
 import { useSearchParams, useNavigate, useLocation } from 'react-router-dom';
@@ -15,11 +15,23 @@ const XboxLogo = () => <img src="/images/logos/xbox.png" alt="Xbox" width="16" h
 const NintendoLogo = () => <img src="/images/logos/nintendo.png" alt="Nintendo" width="16" height="16" />;
 const PCLogo = () => <img src="/images/logos/pc.png" alt="PC" width="16" height="16" />;
 
+const XboxSVG = () => (
+  <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor">
+    <path d="M4.102 5.445C2.8 6.9 2 8.857 2 11c0 4.411 3.589 8 8 8a7.97 7.97 0 0 0 5.054-1.808L4.102 5.445zM19.898 5.445l-10.952 11.747A7.97 7.97 0 0 0 14 19c4.411 0 8-3.589 8-8a7.97 7.97 0 0 0-2.102-5.555zM12 2C9.742 2 7.699 2.893 6.19 4.343L12 10.889l5.81-6.546A9.97 9.97 0 0 0 12 2z" />
+  </svg>
+);
+
+const NintendoSVG = () => (
+  <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor">
+    <path d="M9.067.43l5.27 9.126L9.066 18.68H5.033A5.033 5.033 0 0 1 0 13.648V5.462A5.033 5.033 0 0 1 5.033.43zm3.6 0h6.3A5.033 5.033 0 0 1 24 5.462v8.186a5.033 5.033 0 0 1-5.033 5.032H12.15l5.27-9.125zM7.6 5.52A2.07 2.07 0 1 0 7.6 9.66 2.07 2.07 0 0 0 0-4.14z" />
+  </svg>
+);
+
 const PLATFORMS = [
-  { name: 'PC',          icon: <Monitor size={16} /> },
+  { name: 'PC', icon: <PCLogo /> },
   { name: 'PlayStation', icon: <PSLogo /> },
-  { name: 'Xbox',        icon: <XboxLogo /> },
-  { name: 'Nintendo',    icon: <NintendoLogo /> },
+  { name: 'Xbox', icon: <XboxLogo /> },
+  { name: 'Nintendo', icon: <NintendoLogo /> },
 ];
 
 const Navbar = () => {
@@ -37,33 +49,33 @@ const Navbar = () => {
   const platformMatch = location.pathname.match(/^\/platform\/(.+)$/);
   const activePlatform = platformMatch ? decodeURIComponent(platformMatch[1]) : null;
 
-  // ── Sliding pill state ──
+  // Sliding pill refs
   const desktopBtnRefs = useRef({});
   const mobileBtnRefs  = useRef({});
   const [desktopSlider, setDesktopSlider] = useState({ left: 0, width: 0, opacity: 0 });
   const [mobileSlider,  setMobileSlider]  = useState({ left: 0, width: 0, opacity: 0 });
 
   const calcSlider = (refsMap, setter) => {
-    requestAnimationFrame(() => {
-      if (activePlatform && refsMap.current[activePlatform]) {
-        const btn = refsMap.current[activePlatform];
-        setter({ left: btn.offsetLeft, width: btn.offsetWidth, opacity: 1 });
-      } else {
-        setter(prev => ({ ...prev, opacity: 0 }));
-      }
-    });
+    if (activePlatform && refsMap.current[activePlatform]) {
+      const btn = refsMap.current[activePlatform];
+      const parent = btn.parentElement;
+      const parentRect = parent.getBoundingClientRect();
+      const btnRect    = btn.getBoundingClientRect();
+      setter({ left: btnRect.left - parentRect.left, width: btnRect.width, opacity: 1 });
+    } else {
+      setter(prev => ({ ...prev, opacity: 0 }));
+    }
   };
 
   useEffect(() => { calcSlider(desktopBtnRefs, setDesktopSlider); }, [activePlatform]);
   useEffect(() => { calcSlider(mobileBtnRefs,  setMobileSlider);  }, [activePlatform]);
-
 
   useEffect(() => {
     const fetchGames = async () => {
       try {
         const snap = await getDocs(collection(db, 'games'));
         if (!snap.empty) {
-          setGames(snap.docs.map(doc => ({ id: doc.id, ...doc.data() })));
+          setGames(snap.docs.map(doc => ({ id: doc.id, ...docSnap.data() })));
         } else {
           setGames(fallbackGames);
         }
@@ -144,13 +156,15 @@ const Navbar = () => {
             <div className={`platform-search-container ${isSearchOpen ? 'search-active' : ''}`}>
               {/* Platforms list - hidden when search open */}
               <div className="platforms-list">
-                {/* ── Sliding pill ── */}
-                <div className="platform-slider" style={{
-                  left:    desktopSlider.left,
-                  width:   desktopSlider.width,
-                  opacity: desktopSlider.opacity,
-                }} />
-
+                {/* Sliding pill indicator */}
+                <div
+                  className="platform-slider"
+                  style={{
+                    left:    desktopSlider.left,
+                    width:   desktopSlider.width,
+                    opacity: desktopSlider.opacity,
+                  }}
+                />
                 {PLATFORMS.map(p => {
                   const isActive = activePlatform === p.name;
                   return (
@@ -191,7 +205,7 @@ const Navbar = () => {
               {isSearchOpen && searchTerm.trim() && (
                 <div className="search-dropdown">
                   {games.filter(g => g.title.toLowerCase().includes(searchTerm.toLowerCase())).slice(0, 5).map(game => {
-                    const price = game.discount > 0 ? (game.price * (1 - game.discount/100)).toFixed(2) : Number(game.price || 0).toFixed(2);
+                    const price = game.discount > 0 ? (game.price * (1 - game.discount / 100)).toFixed(2) : Number(game.price || 0).toFixed(2);
                     return (
                       <div key={game.id} className="search-dropdown-item" onClick={() => {
                         navigate(`/game/${game.id}`);
@@ -261,13 +275,15 @@ const Navbar = () => {
 
         {/* MOBILE PLATFORMS BAR (Only visible on mobile) */}
         <div className="platforms-mobile-bar">
-          {/* ── Sliding pill mobile ── */}
-          <div className="platform-slider" style={{
-            left:    mobileSlider.left,
-            width:   mobileSlider.width,
-            opacity: mobileSlider.opacity,
-          }} />
-
+          {/* Sliding pill indicator - mobile */}
+          <div
+            className="platform-slider"
+            style={{
+              left:    mobileSlider.left,
+              width:   mobileSlider.width,
+              opacity: mobileSlider.opacity,
+            }}
+          />
           {PLATFORMS.map(p => {
             const isActive = activePlatform === p.name;
             return (

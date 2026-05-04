@@ -235,4 +235,6 @@
 @media (max-width: 768px) {
   .checkout-layout { grid-template-columns: 1fr; }
   .checkout-summary { position: static; }
+  .checkout-page { padding-top: 60px; }
+  .btn-back { margin-top: 120px; }
 }

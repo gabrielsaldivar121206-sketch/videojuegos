@@ -79,8 +79,6 @@ a {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-  overflow-x: hidden;
-  width: 100%;
 }
 
 .main-content {
@@ -1139,12 +1137,12 @@ button {
 .container {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 0 2rem !important;
+  padding: 0 2rem;
 }
 
 @media (max-width: 576px) {
   .container {
-    padding: 0 20px !important;
+    padding: 0 1.25rem;
   }
 }
 
@@ -1222,3 +1220,12 @@ button {
 .gap-2 { gap: 1rem; }
 .gap-4 { gap: 2rem; }
 .gap-6 { gap: 3rem; }
+
+/* =========================================
+   Búsqueda móvil: empuja el contenido al abrir
+   ========================================= */
+@media (max-width: 768px) {
+  body.mobile-search-open .main-content > * {
+    padding-top: 54px;
+  }
+}

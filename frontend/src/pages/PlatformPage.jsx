@@ -113,9 +113,9 @@ const PlatformPage = () => {
                   {heroGame.discount > 0 && (
                     <span className="pp-hero-discount">-{heroGame.discount}%</span>
                   )}
-                  <span className="pp-hero-price">
-                    {getFinalPrice(heroGame).toFixed(2)} €
-                  </span>
+                    <span className="pp-hero-price">
+                      S/ {getFinalPrice(heroGame).toFixed(2)}
+                    </span>
                 </div>
               </div>
             </div>
@@ -173,7 +173,7 @@ const PlatformPage = () => {
                       <p className="pp-game-title">
                         {game.title} · {platform}
                       </p>
-                      <p className="pp-game-price">{finalPrice} €</p>
+                       <p className="pp-game-price">S/ {finalPrice}</p>
                     </div>
                   </div>
                 );

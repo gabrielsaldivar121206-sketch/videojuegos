@@ -22,7 +22,7 @@ const Hero = () => {
           <h1 className="hero-title">{heroGame.title}</h1>
           <div className="hero-price-row flex items-center gap-2">
             <span className="hero-discount">-{heroGame.discount}%</span>
-            <span className="hero-price">{heroGame.price.toFixed(2)} €</span>
+              <span className="hero-price">S/ {heroGame.price.toFixed(2)}</span>
           </div>
           <span className="hero-cta-hint">Haz clic para ver el juego →</span>
         </div>

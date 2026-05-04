@@ -51,7 +51,7 @@ const CartDrawer = () => {
                     <div className="cart-item-info">
                       <h4>{item.title}</h4>
                       <p className="cart-item-platform">PC (Steam)</p>
-                      <p className="cart-item-price">{finalPrice}€</p>
+                      <p className="cart-item-price">S/ {finalPrice}</p>
                     </div>
                     <button className="cart-delete-btn" onClick={() => removeFromCart(item.id)} title="Eliminar del carrito">
                       <Trash2 size={18} />
@@ -67,7 +67,7 @@ const CartDrawer = () => {
           <div className="cart-footer">
             <div className="cart-total-row">
               <span className="total-label">Total estimado</span>
-              <span className="total-price">{cartTotal.toFixed(2)}€</span>
+              <span className="total-price">S/ {cartTotal.toFixed(2)}</span>
             </div>
             <button className="btn-checkout-drawer" onClick={handleCheckout}>
               FINALIZAR COMPRA <ArrowRight size={18} />

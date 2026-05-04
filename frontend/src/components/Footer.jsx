@@ -1,4 +1,5 @@
 import React from 'react';
+import { FaInstagram, FaFacebookF, FaTwitter, FaYoutube, FaTwitch, FaTiktok, FaDiscord, FaAppStore, FaGooglePlay, FaChrome } from 'react-icons/fa';
 import './Footer.css';
 
 const Footer = () => {
@@ -35,39 +36,39 @@ const Footer = () => {
         {/* Right Column - Community & Apps */}
         <div className="footer-community-ig">
           <h4>Únete a nuestra comunidad</h4>
-          <div className="social-icons-ig">
-            <a href="#" className="social-btn discord"><span className="discord-logo">D</span></a>
-            <a href="#" className="social-btn twitter"><span>X</span></a>
-            <a href="#" className="social-btn instagram"><span>Ig</span></a>
-            <a href="#" className="social-btn facebook"><span>Fb</span></a>
-            <a href="#" className="social-btn youtube"><span>Yt</span></a>
-            <a href="#" className="social-btn twitch"><span>Tw</span></a>
-            <a href="#" className="social-btn tiktok"><span className="tiktok-logo">♪</span></a>
-          </div>
+           <div className="social-icons-ig">
+             <a href="#" className="social-btn discord"><FaDiscord size={24} /></a>
+             <a href="#" className="social-btn twitter"><FaTwitter size={24} /></a>
+             <a href="#" className="social-btn instagram"><FaInstagram size={24} /></a>
+             <a href="#" className="social-btn facebook"><FaFacebookF size={24} /></a>
+             <a href="#" className="social-btn youtube"><FaYoutube size={24} /></a>
+             <a href="#" className="social-btn twitch"><FaTwitch size={24} /></a>
+             <a href="#" className="social-btn tiktok"><FaTiktok size={24} /></a>
+           </div>
 
-          <div className="app-store-btns">
-            <a href="#" className="store-btn">
-              <span className="store-icon apple"></span>
-              <div className="store-text">
-                <small>Available on the</small>
-                <strong>App Store</strong>
-              </div>
-            </a>
-            <a href="#" className="store-btn">
-              <span className="store-icon google">▶</span>
-              <div className="store-text">
-                <small>GET IT ON</small>
-                <strong>Google Play</strong>
-              </div>
-            </a>
-            <a href="#" className="store-btn">
-              <span className="store-icon chrome">❂</span>
-              <div className="store-text">
-                <small>Chrome</small>
-                <strong>Extension</strong>
-              </div>
-            </a>
-          </div>
+           <div className="app-store-btns">
+             <a href="#" className="store-btn">
+               <FaAppStore size={24} />
+               <div className="store-text">
+                 <small>Available on the</small>
+                 <strong>App Store</strong>
+               </div>
+             </a>
+             <a href="#" className="store-btn">
+               <FaGooglePlay size={24} />
+               <div className="store-text">
+                 <small>GET IT ON</small>
+                 <strong>Google Play</strong>
+               </div>
+             </a>
+             <a href="#" className="store-btn">
+               <FaChrome size={24} />
+               <div className="store-text">
+                 <small>Chrome</small>
+                 <strong>Extension</strong>
+               </div>
+             </a>
+           </div>
         </div>
       </div>
       
@@ -77,7 +78,7 @@ const Footer = () => {
           <div className="footer-settings-ig">
             <button className="settings-btn"><span>◎</span> Perú</button>
             <button className="settings-btn"><span>A文</span> Español</button>
-            <button className="settings-btn"><span>€</span> EUR</button>
+             <button className="settings-btn"><span>S/</span> PEN</button>
           </div>
         </div>
       </div>

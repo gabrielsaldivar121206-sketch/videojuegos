@@ -206,8 +206,8 @@ export const testimonialsData = [
 export const PLATFORMS = ['PC', 'PlayStation', 'Xbox', 'Nintendo'];
 
 export const PLATFORM_COLORS = {
-  PC:          { bg: '#00e5ff', text: '#0b0c10' },
-  PlayStation: { bg: '#003087', text: '#ffffff' },
-  Xbox:        { bg: '#107c10', text: '#ffffff' },
-  Nintendo:    { bg: '#e4000f', text: '#ffffff' },
+  PC:          { bg: '#666666', text: '#ffffff' },
+  PlayStation: { bg: '#666666', text: '#ffffff' },
+  Xbox:        { bg: '#666666', text: '#ffffff' },
+  Nintendo:    { bg: '#666666', text: '#ffffff' },
 };

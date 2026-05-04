@@ -86,8 +86,8 @@ const ExplorePage = () => {
           <h3>Precio</h3>
         </div>
         <div className="price-range-display">
-          <span>0 €</span>
-          <span>{priceMax} €</span>
+            <span>S/ 0</span>
+            <span>S/ {priceMax}</span>
         </div>
         <input
           type="range"

@@ -91,10 +91,10 @@ const CheckoutPage = () => {
                   )}
                 </div>
                 <div className="checkout-item-price">
-                  {item.discount > 0 && (
-                    <span className="checkout-original-price">{Number(item.price).toFixed(2)}€</span>
-                  )}
-                  <span className="checkout-final-price">{finalPrice}€</span>
+                    {item.discount > 0 && (
+                      <span className="checkout-original-price">S/ {Number(item.price).toFixed(2)}</span>
+                    )}
+                    <span className="checkout-final-price">S/ {finalPrice}</span>
                 </div>
                 <button className="checkout-remove-btn" onClick={() => removeFromCart(item.id)}>
                   <Trash2 size={16} />
@@ -116,7 +116,7 @@ const CheckoutPage = () => {
                   <div className="checkout-item-info">
                     <p className="checkout-item-title" style={{ fontSize: '0.95rem' }}>{game.title}</p>
                     <p className="checkout-item-platform">Steam</p>
-                    <p style={{ marginTop: '6px', color: '#fff', fontWeight: '500', fontSize: '0.9rem' }}>{recPrice} €</p>
+                     <p style={{ marginTop: '6px', color: '#fff', fontWeight: '500', fontSize: '0.9rem' }}>S/ {recPrice}</p>
                   </div>
                   <button className="rec-add-btn" onClick={() => addToCart(game)} style={{
                     background: 'transparent', border: '1px solid rgba(255,255,255,0.2)', color: '#ccc',
@@ -140,20 +140,20 @@ const CheckoutPage = () => {
                 ? (Number(item.price) * (1 - item.discount / 100)).toFixed(2)
                 : Number(item.price).toFixed(2);
               return (
-                <div key={item.id} className="summary-row">
-                  <span>{item.title.length > 22 ? item.title.slice(0, 22) + '…' : item.title}</span>
-                  <span>{price}€</span>
-                </div>
+                  <div key={item.id} className="summary-row">
+                    <span>{item.title.length > 22 ? item.title.slice(0, 22) + '…' : item.title}</span>
+                    <span>S/ {price}</span>
+                  </div>
               );
             })}
           </div>
 
           <div className="summary-divider" />
 
-          <div className="summary-total">
-            <span>Total</span>
-            <span className="total-highlight">{cartTotal.toFixed(2)}€</span>
-          </div>
+           <div className="summary-total">
+             <span>Total</span>
+             <span className="total-highlight">S/ {cartTotal.toFixed(2)}</span>
+           </div>
 
           {!user && (
             <div className="checkout-login-warning">

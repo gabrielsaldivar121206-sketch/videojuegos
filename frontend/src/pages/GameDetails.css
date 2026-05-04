@@ -438,12 +438,93 @@
    RESPONSIVE
    ============================================= */
 @media (max-width: 1024px) {
-  .details-hero-content { flex-direction: column; align-items: flex-start; padding-top: 110px; }
-  .purchase-card-glass { width: 100%; }
-  .game-cover { width: 100%; max-width: 420px; }
   .details-info-section { flex-direction: column; gap: 35px; }
   .features-grid { grid-template-columns: repeat(4, 1fr); }
   .screenshots-grid { height: 260px; grid-template-columns: 1fr 1fr; }
   .screenshot-big { grid-row: auto; grid-column: auto; }
   .system-req-columns { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 768px) {
+  /* Hero banner más bajo en móvil */
+  .details-hero-banner {
+    height: 220px;
+  }
+
+  /* Botón retroceder: debajo del navbar + plataformas (~105px) */
+  .back-link-ig {
+    top: 120px;
+    left: 15px;
+    font-size: 0.82rem;
+    padding: 6px 14px;
+  }
+
+  /* Layout principal: columna vertical */
+  .details-hero-content-overlap {
+    flex-direction: column;
+    align-items: stretch;
+    margin: -40px 0 0;
+    padding: 0 16px 30px;
+    gap: 14px;
+  }
+
+  /* Imagen del juego: más estrecha, centrada y un poco más alta */
+  .left-column-ig {
+    justify-content: center;
+    align-items: center;
+  }
+  .game-cover-ig-exact {
+    width: 75%;
+    max-width: 75%;
+    max-height: 210px;
+    margin: 0 auto;
+    display: block;
+    border-radius: 10px;
+    aspect-ratio: unset;
+    object-fit: cover;
+  }
+
+  /* Tarjeta de compra: ancho completo */
+  .purchase-card-glass-exact {
+    width: 100%;
+    height: auto;
+    padding: 20px 18px;
+    border-radius: 10px;
+  }
+
+  .game-title-ig-exact { font-size: 1.05rem; }
+  .final-price-exact { font-size: 1.8rem; }
+
+  .add-cart-btn-ig-exact { padding: 12px; font-size: 0.95rem; }
+  .add-cart-btn-secondary { font-size: 0.85rem; }
+
+  /* Secciones de info */
+  .details-info-section {
+    flex-direction: column;
+    gap: 24px;
+    margin: 30px 0 0;
+    padding: 0 16px;
+  }
+  .visuales-section,
+  .features-section,
+  .description-section {
+    margin-top: 30px;
+    padding: 0 16px;
+  }
+  .description-section { padding-bottom: 40px; }
+
+  /* Screenshots en móvil: una columna */
+  .screenshots-grid {
+    grid-template-columns: 1fr;
+    height: auto;
+    gap: 6px;
+  }
+  .screenshot-item { aspect-ratio: 16/9; }
+  .screenshot-big { grid-row: auto; grid-column: auto; }
+
+  /* Features: 3 columnas en móvil */
+  .features-grid { grid-template-columns: repeat(3, 1fr); }
+
+  /* Requisitos: columna única */
+  .system-req-columns { grid-template-columns: 1fr; gap: 20px; }
 }

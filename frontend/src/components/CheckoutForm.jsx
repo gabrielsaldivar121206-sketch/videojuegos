@@ -71,9 +71,9 @@ const CheckoutForm = ({ totalAmount }) => {
         id="submit"
         style={{ marginTop: '20px' }}
       >
-        <span id="button-text">
-          {isProcessing ? "Procesando el pago..." : `Pagar ${totalAmount}€ con Stripe`}
-        </span>
+          <span id="button-text">
+            {isProcessing ? "Procesando el pago..." : `Pagar S/ ${totalAmount} con Stripe`}
+          </span>
       </button>
       
       <div className="checkout-trust" style={{ marginTop: '15px' }}>

@@ -211,11 +211,11 @@ const GameDetails = () => {
             <div className="price-row-ig-exact">
               {game.discount > 0 && (
                 <>
-                  <span className="original-price-exact">{Number(game.price).toFixed(2)} €</span>
+                   <span className="original-price-exact">{Number(game.price).toFixed(2)} S/</span>
                   <span className="discount-badge-exact">-{game.discount}%</span>
                 </>
               )}
-              <span className="final-price-exact">{finalPrice} €</span>
+               <span className="final-price-exact">{finalPrice} S/</span>
             </div>
 
             <div className="actions-row-ig-exact">
