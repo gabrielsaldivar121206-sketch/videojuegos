@@ -10,8 +10,23 @@ const PORT = process.env.PORT || 3001;
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
 // ── Middleware ──────────────────────────────────────────────────
+const allowedOrigins = [
+  /^https:\/\/.*\.vercel\.app$/,   // Any Vercel subdomain
+  /^http:\/\/localhost:\d+$/,       // Local dev
+];
+if (process.env.FRONTEND_URL) {
+  allowedOrigins.push(process.env.FRONTEND_URL);
+}
+
 app.use(cors({
-  origin: process.env.FRONTEND_URL || 'http://localhost:5173',
+  origin: (origin, callback) => {
+    // Allow requests with no origin (mobile apps, curl, Postman)
+    if (!origin) return callback(null, true);
+    const allowed = allowedOrigins.some(o =>
+      typeof o === 'string' ? o === origin : o.test(origin)
+    );
+    allowed ? callback(null, true) : callback(new Error(`CORS bloqueado: ${origin}`));
+  },
   methods: ['GET', 'POST']
 }));
 app.use(express.json());
