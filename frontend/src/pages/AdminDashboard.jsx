@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { collection, getDocs, deleteDoc, doc, addDoc, updateDoc } from 'firebase/firestore';
+import { collection, getDocs, deleteDoc, doc, addDoc, updateDoc, query, orderBy } from 'firebase/firestore';
 import { db } from '../firebase';
-import { ShieldAlert, Trash2, Plus, Edit, Search, Filter, LayoutDashboard, Package, Settings, LogOut, Menu, X } from 'lucide-react';
+import { ShieldAlert, Trash2, Plus, Edit, Search, Filter, LayoutDashboard, Package, Settings, LogOut, Menu, X, SortAsc, SortDesc } from 'lucide-react';
 import GameFormModal from '../components/GameFormModal';
 import { featuredGames } from '../data/games';
 import { useNavigate } from 'react-router-dom';
@@ -16,7 +16,9 @@ const AdminDashboard = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const [searchTerm, setSearchTerm] = useState("");
-  const [categoryFilter, setCategoryFilter] = useState("All");
+  const [platformFilter, setPlatformFilter] = useState("All");
+  const [sortBy, setSortBy] = useState("title"); // title, price, platform
+  const [sortOrder, setSortOrder] = useState("asc"); // asc, desc
 
   const navigate = useNavigate();
   const { logout } = useAuth();
@@ -67,8 +69,9 @@ const AdminDashboard = () => {
     try {
       setLoading(true);
       // Delete all existing games
-      for (const game of games) {
-        await deleteDoc(doc(db, "games", game.id));
+      const snapshot = await getDocs(collection(db, "games"));
+      for (const d of snapshot.docs) {
+        await deleteDoc(doc(db, "games", d.id));
       }
       
       // Add all featured games
@@ -88,16 +91,41 @@ const AdminDashboard = () => {
     }
   };
 
-  const filteredGames = useMemo(() => games.filter(game => {
-    const matchSearch = game.title?.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchCategory = categoryFilter === "All" || game.genre?.toLowerCase().includes(categoryFilter.toLowerCase());
-    return matchSearch && matchCategory;
-  }), [games, searchTerm, categoryFilter]);
+  const filteredGames = useMemo(() => {
+    let filtered = games.filter(game => {
+      const matchSearch = game.title?.toLowerCase().includes(searchTerm.toLowerCase());
+      const matchPlatform = platformFilter === "All" || game.platform === platformFilter;
+      return matchSearch && matchPlatform;
+    });
 
-  const uniqueCategories = useMemo(() => {
-    const cats = new Set();
-    games.forEach(g => g.genre?.split(',').forEach(c => cats.add(c.trim())));
-    return ["All", ...Array.from(cats)];
+    // Apply sorting
+    if (sortBy === "title") {
+      filtered.sort((a, b) => 
+        sortOrder === "asc" 
+          ? a.title.localeCompare(b.title) 
+          : b.title.localeCompare(a.title)
+      );
+    } else if (sortBy === "price") {
+      filtered.sort((a, b) => 
+        sortOrder === "asc" 
+          ? (a.price || 0) - (b.price || 0) 
+          : (b.price || 0) - (a.price || 0)
+      );
+    } else if (sortBy === "platform") {
+      filtered.sort((a, b) => 
+        sortOrder === "asc" 
+          ? (a.platform || "").localeCompare(b.platform || "") 
+          : (b.platform || "").localeCompare(a.platform || "")
+      );
+    }
+
+    return filtered;
+  }, [games, searchTerm, platformFilter, sortBy, sortOrder]);
+
+  const uniquePlatforms = useMemo(() => {
+    const platforms = new Set();
+    games.forEach(g => platforms.add(g.platform));
+    return ["All", ...Array.from(platforms).sort()];
   }, [games]);
 
   return (
@@ -171,10 +199,28 @@ const AdminDashboard = () => {
           </div>
           <div className="filter-box">
             <Filter size={18} className="filter-icon" />
-            <select value={categoryFilter} onChange={e => setCategoryFilter(e.target.value)}>
-              {uniqueCategories.map(cat => (
-                <option key={cat} value={cat}>{cat === "All" ? "Todas las categorías" : cat}</option>
+            <select value={platformFilter} onChange={e => setPlatformFilter(e.target.value)}>
+              {uniquePlatforms.map(platform => (
+                <option key={platform} value={platform}>{platform === "All" ? "Todas las plataformas" : platform}</option>
               ))}
+            </select>
+          </div>
+          <div className="sort-box">
+            <SortAsc size={18} className="sort-icon" />
+            <select 
+              value={`${sortBy}-${sortOrder}`} 
+              onChange={e => {
+                const [by, order] = e.target.value.split('-');
+                setSortBy(by);
+                setSortOrder(order);
+              }}
+            >
+              <option value="title-asc">Título A-Z</option>
+              <option value="title-desc">Título Z-A</option>
+              <option value="price-asc">Precio: Bajo a Alto</option>
+              <option value="price-desc">Precio: Alto a Bajo</option>
+              <option value="platform-asc">Plataforma A-Z</option>
+              <option value="platform-desc">Plataforma Z-A</option>
             </select>
           </div>
         </div>
@@ -189,7 +235,7 @@ const AdminDashboard = () => {
                   <tr>
                     <th width="70">Portada</th>
                     <th>Título</th>
-                    <th className="hide-mobile">Categoría</th>
+                    <th className="hide-mobile">Plataforma</th>
                     <th width="100">Precio</th>
                     <th width="100" className="hide-mobile">Descuento</th>
                     <th width="100">Acciones</th>
@@ -202,8 +248,8 @@ const AdminDashboard = () => {
                     <tr key={game.id}>
                       <td><img src={game.image} alt={game.title} className="table-img" /></td>
                       <td className="table-title"><strong>{game.title}</strong></td>
-                      <td className="table-category hide-mobile">{game.genre || '---'}</td>
-                       <td className="table-price">S/ {Number(game.price || 0).toFixed(2)}</td>
+                      <td className="table-platform hide-mobile">{game.platform || '---'}</td>
+                      <td className="table-price">S/ {Number(game.price || 0).toFixed(2)}</td>
                       <td className="hide-mobile">
                         {game.discount > 0
                           ? <span className="badge-discount">-{game.discount}%</span>

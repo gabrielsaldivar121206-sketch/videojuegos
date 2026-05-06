@@ -7,8 +7,9 @@ import {
   signOut,
   updateProfile
 } from 'firebase/auth';
-import { doc, setDoc, getDoc, serverTimestamp } from 'firebase/firestore';
-import { auth, db, googleProvider } from '../firebase';
+import { doc, setDoc, getDoc, serverTimestamp, updateDoc } from 'firebase/firestore';
+import { getStorage, ref, uploadBytes, getDownloadURL, deleteObject } from 'firebase/storage';
+import { auth, db, googleProvider, storage } from '../firebase';
 
 const AuthContext = createContext();
 
@@ -29,6 +30,7 @@ export const AuthProvider = ({ children }) => {
         displayName: firebaseUser.displayName || 'Jugador',
         email: firebaseUser.email,
         photoURL: firebaseUser.photoURL || null,
+        bannerURL: null,
         role: 'user', // Por defecto todos son usuarios normales
         wishlist: [],
         library: [],
@@ -37,6 +39,90 @@ export const AuthProvider = ({ children }) => {
     }
     const updated = await getDoc(ref);
     setUserProfile(updated.data());
+  };
+
+  // Subir foto de perfil
+  const uploadProfilePicture = async (file) => {
+    if (!user) return null;
+    try {
+      const storageRef = ref(storage, `profile_pictures/${user.uid}`);
+      await uploadBytes(storageRef, file);
+      const downloadURL = await getDownloadURL(storageRef);
+      
+      // Actualizar en Firebase Auth
+      await updateProfile(user, { photoURL: downloadURL });
+      
+      // Actualizar en Firestore
+      await updateDoc(doc(db, 'users', user.uid), { photoURL: downloadURL });
+      
+      // Actualizar estado local
+      setUserProfile(prev => ({ ...prev, photoURL: downloadURL }));
+      
+      return downloadURL;
+    } catch (error) {
+      console.error("Error uploading profile picture:", error);
+      throw error;
+    }
+  };
+
+  // Subir banner de perfil
+  const uploadProfileBanner = async (file) => {
+    if (!user) return null;
+    try {
+      const storageRef = ref(storage, `profile_banners/${user.uid}`);
+      await uploadBytes(storageRef, file);
+      const downloadURL = await getDownloadURL(storageRef);
+      
+      // Actualizar en Firestore
+      await updateDoc(doc(db, 'users', user.uid), { bannerURL: downloadURL });
+      
+      // Actualizar estado local
+      setUserProfile(prev => ({ ...prev, bannerURL: downloadURL }));
+      
+      return downloadURL;
+    } catch (error) {
+      console.error("Error uploading profile banner:", error);
+      throw error;
+    }
+  };
+
+  // Eliminar foto de perfil
+  const deleteProfilePicture = async () => {
+    if (!user || !userProfile?.photoURL) return;
+    try {
+      const storageRef = ref(storage, `profile_pictures/${user.uid}`);
+      await deleteObject(storageRef);
+      
+      // Actualizar en Firebase Auth
+      await updateProfile(user, { photoURL: null });
+      
+      // Actualizar en Firestore
+      await updateDoc(doc(db, 'users', user.uid), { photoURL: null });
+      
+      // Actualizar estado local
+      setUserProfile(prev => ({ ...prev, photoURL: null }));
+    } catch (error) {
+      console.error("Error deleting profile picture:", error);
+      throw error;
+    }
+  };
+
+  // Eliminar banner de perfil
+  const deleteProfileBanner = async () => {
+    if (!user || !userProfile?.bannerURL) return;
+    try {
+      const storageRef = ref(storage, `profile_banners/${user.uid}`);
+      await deleteObject(storageRef);
+      
+      // Actualizar en Firestore
+      await updateDoc(doc(db, 'users', user.uid), { bannerURL: null });
+      
+      // Actualizar estado local
+      setUserProfile(prev => ({ ...prev, bannerURL: null }));
+    } catch (error) {
+      console.error("Error deleting profile banner:", error);
+      throw error;
+    }
   };
 
   useEffect(() => {
@@ -88,7 +174,11 @@ export const AuthProvider = ({ children }) => {
     registerWithEmail,
     loginWithGoogle,
     logout,
-    refreshProfile
+    refreshProfile,
+    uploadProfilePicture,
+    uploadProfileBanner,
+    deleteProfilePicture,
+    deleteProfileBanner
   };
 
   return (

@@ -32,14 +32,32 @@ const Home = () => {
   return (
     <>
       {!query && <Hero />}
-      <GameGrid />
+      <section id="tendencias">
+        <GameGrid />
+      </section>
       {!query && <TrustBar />}
-      {!query && <GameSlider title="Reservas" />}
-      {!query && <GameSlider title="Te recomendamos" />}
+      {!query && (
+        <section id="reservas">
+          <GameSlider title="Reservas" />
+        </section>
+      )}
+      {!query && (
+        <section id="proximas-salidas">
+          <GameSlider title="Te recomendamos" />
+        </section>
+      )}
       {!query && <BigReviewBanner />}
       {!query && <GameSlider title="Más vendidos" />}
-      {!query && <LatestReviews />}
-      {!query && <TopIndieBanner />}
+      {!query && (
+        <section id="blog">
+          <LatestReviews />
+        </section>
+      )}
+      {!query && (
+        <section id="soporte">
+          <TopIndieBanner />
+        </section>
+      )}
     </>
   );
 };

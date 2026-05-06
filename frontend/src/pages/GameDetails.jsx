@@ -175,8 +175,11 @@ const GameDetails = () => {
 
   /* ── States ── */
   if (loading) return (
-    <div className="page-container not-found">
-      <div className="loading-spinner">Cargando datos del juego...</div>
+    <div className="gd-loading-screen">
+      <div className="gd-loading-inner">
+        <div className="gd-spinner-ring"></div>
+        <div className="gd-loading-text">CARGANDO</div>
+      </div>
     </div>
   );
 
@@ -198,6 +201,11 @@ const GameDetails = () => {
   const tags = game.genre
     ? game.genre.split(',').map(t => t.trim())
     : ['Acción', 'Aventura', 'Ciencia Ficción'];
+
+  // Check if user already owns this game
+  const isOwned = userProfile?.library?.some(
+    w => w.id === game.id || w.title === game.title
+  ) || false;
 
   const description = game.description ||
     `${game.title} es una experiencia única que desafía los límites del gaming moderno. Sumérgete en un mundo lleno de detalle, acción y narrativa que te mantendrá enganchado desde el primer minuto. Descubre secretos, supera retos épicos y vive la aventura de tu vida.\n\nDiseñado para los jugadores más exigentes, con gráficos de última generación y una jugabilidad que lo cambia todo.`;
@@ -238,35 +246,55 @@ const GameDetails = () => {
           
           <div style={{ flex: 1 }}></div>
 
-          <div className="price-and-actions-wrapper">
-            <div className="price-row-ig-exact">
-              {game.discount > 0 && (
+            <div className="price-and-actions-wrapper">
+              {isOwned ? (
+                /* ─── USER ALREADY OWNS THIS GAME ─── */
+                <div className="owned-banner">
+                  <div className="owned-banner-top">
+                    <span className="owned-check">✓</span>
+                    <span className="owned-label">Ya tienes este juego</span>
+                  </div>
+                  <button
+                    className="play-now-btn"
+                    onClick={() => navigate('/perfil')}
+                  >
+                    ▶ Jugar ahora
+                  </button>
+                  <p className="owned-sub">Disponible en tu biblioteca</p>
+                </div>
+              ) : (
+                /* ─── NORMAL BUY FLOW ─── */
                 <>
-                   <span className="original-price-exact">{Number(game.price).toFixed(2)} S/</span>
-                  <span className="discount-badge-exact">-{game.discount}%</span>
+                  <div className="price-row-ig-exact">
+                    {game.discount > 0 && (
+                      <>
+                         <span className="original-price-exact">{Number(game.price).toFixed(2)} S/</span>
+                        <span className="discount-badge-exact">-{game.discount}%</span>
+                      </>
+                    )}
+                     <span className="final-price-exact">{finalPrice} S/</span>
+                  </div>
+
+                  <div className="actions-row-ig-exact">
+                    <button
+                      className={`heart-btn-exact ${inWishlist ? 'active' : ''}`}
+                      aria-label="Lista de deseos"
+                      onClick={handleWishlist}
+                      disabled={wishlistLoading}
+                      title={inWishlist ? 'Quitar de lista de deseos' : 'Añadir a lista de deseos'}
+                    >
+                      <Heart size={20} fill={inWishlist ? 'currentColor' : 'none'} />
+                    </button>
+                    <button className="add-cart-btn-ig-exact" onClick={handleBuyNow}>
+                      <ShoppingCart size={18} /> Comprar ahora
+                    </button>
+                    <button className="add-cart-btn-secondary" onClick={() => { addToCart(game); toggleCart(); }}>
+                      Añadir a la cesta
+                    </button>
+                  </div>
                 </>
               )}
-               <span className="final-price-exact">{finalPrice} S/</span>
             </div>
-
-            <div className="actions-row-ig-exact">
-              <button
-                className={`heart-btn-exact ${inWishlist ? 'active' : ''}`}
-                aria-label="Lista de deseos"
-                onClick={handleWishlist}
-                disabled={wishlistLoading}
-                title={inWishlist ? 'Quitar de lista de deseos' : 'Añadir a lista de deseos'}
-              >
-                <Heart size={20} fill={inWishlist ? 'currentColor' : 'none'} />
-              </button>
-              <button className="add-cart-btn-ig-exact" onClick={handleBuyNow}>
-                <ShoppingCart size={18} /> Comprar ahora
-              </button>
-              <button className="add-cart-btn-secondary" onClick={() => { addToCart(game); toggleCart(); }}>
-                Añadir a la cesta
-              </button>
-            </div>
-          </div>
         </div>
       </div>
 

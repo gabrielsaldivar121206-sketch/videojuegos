@@ -87,14 +87,22 @@
   overflow: hidden;
 }
 .top-mini-links a {
-  color: #ffffff;
+  color: #888888;
   font-size: 0.85rem;
   font-weight: 500;
   text-decoration: none;
   white-space: nowrap;
-  transition: color 0.25s;
+  display: inline-block;
+  transition: color 0.25s ease, transform 0.2s ease;
+  cursor: pointer;
 }
-.top-mini-links a:hover { color: #00f3ff; }
+.top-mini-links a:hover {
+  color: #ffffff;
+  transform: translateY(-2px);
+}
+.top-mini-links a.active {
+  color: #00f3ff;
+}
 
 /* =============================================
    PLATFORM / SEARCH CONTAINER

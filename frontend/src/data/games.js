@@ -6,6 +6,11 @@ export const PLATFORM_COLORS = {
 };
 
 export const featuredGames = [
+  // ─── PC (Juegos Populares Añadidos) ───
+  { id: 'pc-mc', title: 'Minecraft Java & Bedrock Edition', price: 29.99, discount: 20, platform: 'PC', isNew: true, categories: ['Action','Adventure'], image: 'https://cdn.akamai.steamstatic.com/steam/apps/1672970/capsule_616x353.jpg' },
+  { id: 'pc-fc', title: 'EA SPORTS FC 24', price: 69.99, discount: 50, platform: 'PC', isNew: true, categories: ['Sports'], image: 'https://cdn.akamai.steamstatic.com/steam/apps/2195250/capsule_616x353.jpg' },
+  { id: 'pc-bndy', title: 'Bendy and the Ink Machine', price: 19.99, discount: 75, platform: 'PC', isNew: false, categories: ['Horror','Adventure'], image: 'https://cdn.akamai.steamstatic.com/steam/apps/622650/capsule_616x353.jpg' },
+  
   // ─── PC (10 Juegos) ───
   { id: 'pc-1', title: 'Cyberpunk 2077', price: 59.99, discount: 50, platform: 'PC', isNew: false, categories: ['Action','RPG','Sci-Fi'], image: 'https://cdn.akamai.steamstatic.com/steam/apps/1091500/capsule_616x353.jpg' },
   { id: 'pc-2', title: "Baldur's Gate 3", price: 59.99, discount: 10, platform: 'PC', isNew: true, categories: ['RPG','Strategy'], image: 'https://cdn.akamai.steamstatic.com/steam/apps/1086940/capsule_616x353.jpg' },
@@ -19,7 +24,7 @@ export const featuredGames = [
   { id: 'pc-10', title: 'Monster Hunter: World', price: 29.99, discount: 50, platform: 'PC', isNew: false, categories: ['Action','RPG'], image: 'https://cdn.akamai.steamstatic.com/steam/apps/582010/capsule_616x353.jpg' },
 
   // ─── PlayStation (10 Juegos) ───
-  { id: 'ps-0', title: 'The Last of Us Part II', price: 59.99, discount: 40, platform: 'PlayStation', isNew: false, categories: ['Action','Horror','Adventure'], image: 'https://cdn.akamai.steamstatic.com/steam/apps/1888930/capsule_616x353.jpg' },
+  { id: 'ps-0', title: 'The Last of Us Part II', price: 59.99, discount: 40, platform: 'PlayStation', isNew: false, categories: ['Action','Horror','Adventure'], image: 'https://cdn.akamai.steamstatic.com/steam/apps/2531310/library_hero.jpg' },
   { id: 'ps-1', title: "Ghost of Tsushima DIRECTOR'S CUT", price: 59.99, discount: 20, platform: 'PlayStation', isNew: true, categories: ['Action','Adventure'], image: 'https://cdn.akamai.steamstatic.com/steam/apps/2215430/capsule_616x353.jpg' },
   { id: 'ps-2', title: 'God of War Ragnarök', price: 59.99, discount: 30, platform: 'PlayStation', isNew: true, categories: ['Action','RPG'], image: 'https://cdn.akamai.steamstatic.com/steam/apps/2322010/capsule_616x353.jpg' },
   { id: 'ps-3', title: "Marvel's Spider-Man Remastered", price: 59.99, discount: 40, platform: 'PlayStation', isNew: false, categories: ['Action','Adventure'], image: 'https://cdn.akamai.steamstatic.com/steam/apps/1817070/capsule_616x353.jpg' },
@@ -69,7 +74,7 @@ export const featuredGames = [
 
   // ─── PlayStation (Nuevos Clásicos) ───
   { id: 'ps-11', title: 'Detroit: Become Human', price: 39.99, discount: 50, platform: 'PlayStation', isNew: false, categories: ['Adventure','Sci-Fi'], image: 'https://cdn.akamai.steamstatic.com/steam/apps/1222140/capsule_616x353.jpg' },
-  { id: 'ps-12', title: 'Marvel\'s Spider-Man: Miles Morales', price: 49.99, discount: 40, platform: 'PlayStation', isNew: false, categories: ['Action','Adventure'], image: 'https://cdn.akamai.steamstatic.com/steam/apps/1817190/capsule_616x353.jpg' },
+  { id: 'ps-12', title: "Marvel's Spider-Man: Miles Morales", price: 49.99, discount: 40, platform: 'PlayStation', isNew: false, categories: ['Action','Adventure'], image: 'https://cdn.akamai.steamstatic.com/steam/apps/1817190/capsule_616x353.jpg' },
   { id: 'ps-13', title: 'Horizon Forbidden West', price: 59.99, discount: 20, platform: 'PlayStation', isNew: true, categories: ['Action','RPG'], image: 'https://cdn.akamai.steamstatic.com/steam/apps/2420110/capsule_616x353.jpg' },
   { id: 'ps-14', title: 'Ratchet & Clank: Rift Apart', price: 59.99, discount: 33, platform: 'PlayStation', isNew: false, categories: ['Action','Platformer'], image: 'https://cdn.akamai.steamstatic.com/steam/apps/1895880/capsule_616x353.jpg' },
   { id: 'ps-15', title: 'Death Stranding', price: 39.99, discount: 50, platform: 'PlayStation', isNew: false, categories: ['Adventure','Sci-Fi'], image: 'https://cdn.akamai.steamstatic.com/steam/apps/1850570/capsule_616x353.jpg' },

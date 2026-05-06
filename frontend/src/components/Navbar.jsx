@@ -84,6 +84,40 @@ const Navbar = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  // Bypass CSS scroll-behavior limitations caused by overflow:hidden on parent elements
+  const smoothScrollTo = (targetY, duration = 900) => {
+    const startY = window.pageYOffset;
+    const diff = targetY - startY;
+    if (Math.abs(diff) < 2) return;
+    let startTime = null;
+    const ease = (t) => t < 0.5 ? 4*t*t*t : (t-1)*(2*t-2)*(2*t-2)+1;
+    const step = (now) => {
+      if (!startTime) startTime = now;
+      const progress = Math.min((now - startTime) / duration, 1);
+      window.scrollTo(0, startY + diff * ease(progress));
+      if (progress < 1) requestAnimationFrame(step);
+    };
+    requestAnimationFrame(step);
+  };
+
+  // Auto-scroll when navigating to home with a hash (e.g. from another route)
+  useEffect(() => {
+    if (location.hash && location.pathname === '/') {
+      const sectionId = location.hash.substring(1);
+      const tryScroll = (retries = 0) => {
+        const el = document.getElementById(sectionId);
+        if (el) {
+          const top = el.getBoundingClientRect().top + window.pageYOffset - 100;
+          smoothScrollTo(top);
+        } else if (retries < 10) {
+          setTimeout(() => tryScroll(retries + 1), 100);
+        }
+      };
+      setTimeout(() => tryScroll(), 100);
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [location.hash, location.pathname]);
+
   // Auto-focus + body class when search opens on mobile
   useEffect(() => {
     if (isSearchOpen) {
@@ -100,10 +134,18 @@ const Navbar = () => {
   const handleSearchSubmit = (e) => {
     e.preventDefault();
     if (searchTerm.trim()) {
-      const searchResults = games.filter(g => g.title.toLowerCase().includes(searchTerm.toLowerCase()));
+      const st = searchTerm.toLowerCase().trim();
+      const searchResults = games.filter(g => {
+        if (!g.title) return false;
+        const title = g.title.toLowerCase();
+        return title.includes(st) || 
+               (st === 'fornite' && title.includes('fortnite'));
+      });
       if (searchResults.length > 0) {
         navigate(`/game/${searchResults[0].id}`);
         closeSearch();
+      } else {
+        alert("No se encontró ningún juego con ese nombre.");
       }
     }
   };
@@ -115,6 +157,43 @@ const Navbar = () => {
   const closeSearch = () => {
     setIsSearchOpen(false);
     setSearchTerm('');
+  };
+
+  const handleNavScroll = (sectionId) => (e) => {
+    e.preventDefault();
+
+    const doScroll = () => {
+      const el = document.getElementById(sectionId);
+      if (!el) return;
+      const targetTop = el.getBoundingClientRect().top + window.pageYOffset - 100;
+      const currentTop = window.pageYOffset;
+
+      // If user is already near the section (within 200px), scroll to top first
+      // so the animation is always visible and satisfying
+      if (Math.abs(currentTop - targetTop) < 300) {
+        smoothScrollTo(0, 400); // scroll to top fast
+        setTimeout(() => smoothScrollTo(targetTop, 900), 450); // then scroll to section
+      } else {
+        smoothScrollTo(targetTop, 900);
+      }
+    };
+
+    if (location.pathname !== '/') {
+      navigate('/');
+      let retries = 0;
+      const tryScroll = () => {
+        const el = document.getElementById(sectionId);
+        if (el) {
+          const top = el.getBoundingClientRect().top + window.pageYOffset - 100;
+          smoothScrollTo(top);
+        } else if (retries++ < 15) {
+          setTimeout(tryScroll, 100);
+        }
+      };
+      setTimeout(tryScroll, 200);
+    } else {
+      doScroll();
+    }
   };
 
   return (
@@ -133,11 +212,11 @@ const Navbar = () => {
           {/* CENTER */}
           <div className="navbar-center">
             <div className="top-mini-links">
-              <a href="/#store">Tendencias</a>
-              <a href="/#featured">Reservas</a>
-              <a href="/#community">Próximas salidas</a>
-              <a href="/#support">Blog</a>
-              <a href="/#support">Soporte 24/7</a>
+              <a href="/#tendencias" onClick={handleNavScroll('tendencias')}>Tendencias</a>
+              <a href="/#reservas" onClick={handleNavScroll('reservas')}>Reservas</a>
+              <a href="/#proximas-salidas" onClick={handleNavScroll('proximas-salidas')}>Próximas salidas</a>
+              <a href="/#blog" onClick={handleNavScroll('blog')}>Blog</a>
+              <a href="/#soporte" onClick={handleNavScroll('soporte')}>Soporte 24/7</a>
             </div>
 
             {/* Platform bar OR Search bar - animated switch */}
@@ -187,10 +266,14 @@ const Navbar = () => {
                 </button>
               </form>
 
-              {/* Dropdown Results */}
               {isSearchOpen && searchTerm.trim() && (
                 <div className="search-dropdown">
-                  {games.filter(g => g.title.toLowerCase().includes(searchTerm.toLowerCase())).slice(0, 5).map(game => {
+                  {games.filter(g => {
+                    if (!g.title) return false;
+                    const st = searchTerm.toLowerCase().trim();
+                    const title = g.title.toLowerCase();
+                    return title.includes(st) || (st === 'fornite' && title.includes('fortnite'));
+                  }).slice(0, 5).map(game => {
                     const price = game.discount > 0 ? (game.price * (1 - game.discount/100)).toFixed(2) : Number(game.price || 0).toFixed(2);
                     return (
                       <div key={game.id} className="search-dropdown-item" onClick={() => {
@@ -206,7 +289,12 @@ const Navbar = () => {
                       </div>
                     );
                   })}
-                  {games.filter(g => g.title.toLowerCase().includes(searchTerm.toLowerCase())).length === 0 && (
+                  {games.filter(g => {
+                    if (!g.title) return false;
+                    const st = searchTerm.toLowerCase().trim();
+                    const title = g.title.toLowerCase();
+                    return title.includes(st) || (st === 'fornite' && title.includes('fortnite'));
+                  }).length === 0 && (
                     <div className="search-dropdown-empty">No se encontraron resultados</div>
                   )}
                 </div>

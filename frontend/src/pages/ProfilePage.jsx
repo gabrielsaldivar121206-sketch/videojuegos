@@ -1,8 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
-import { LogOut, Library, Heart, Star, ShoppingBag, ExternalLink, Gamepad2, Monitor } from 'lucide-react';
-import { PLATFORMS, PLATFORM_COLORS } from '../data/games';
+import {
+  LogOut, Library, Heart, Star, ShoppingBag, ExternalLink,
+  Gamepad2, Monitor, Camera, Play, Upload, Pencil
+} from 'lucide-react';
+import { PLATFORM_COLORS } from '../data/games';
 import './ProfilePage.css';
 
 const PSIcon = () => (
@@ -28,53 +31,73 @@ const PLATFORM_ICONS = {
   Nintendo: <NintendoIcon />,
 };
 
+const PLATFORMS_LIST = ['PC', 'PlayStation', 'Xbox', 'Nintendo'];
+
 const ProfilePage = () => {
-  const { user, userProfile, logout } = useAuth();
+  const { user, userProfile, logout, uploadProfilePicture, uploadProfileBanner } = useAuth();
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('library');
   const [activePlatform, setActivePlatform] = useState('all');
+  const [uploadingAvatar, setUploadingAvatar] = useState(false);
+  const [uploadingBanner, setUploadingBanner] = useState(false);
+  const [uploadError, setUploadError] = useState('');
+
+  const avatarInputRef = useRef(null);
+  const bannerInputRef = useRef(null);
 
   if (!user) { navigate('/'); return null; }
 
   const handleLogout = async () => { await logout(); navigate('/'); };
 
-  const avatar = user.photoURL ||
+  const avatar = userProfile?.photoURL || user.photoURL ||
     `https://ui-avatars.com/api/?name=${encodeURIComponent(userProfile?.displayName || 'U')}&background=00e5ff&color=0b0c10&bold=true&size=128`;
 
   const library = userProfile?.library || [];
   const wishlist = userProfile?.wishlist || [];
 
-  const tabs = [
-    { id: 'library',  label: 'Mi Biblioteca',  icon: Library,     count: library.length },
-    { id: 'wishlist', label: 'Lista de deseos', icon: Heart,       count: wishlist.length },
-    { id: 'reviews',  label: 'Reseñas',         icon: Star,        count: 0 },
-  ];
-
-  // Group by platform
-  const groupByPlatform = (games) => {
-    const groups = {};
-    games.forEach(g => {
-      const p = g.platform || 'PC';
-      if (!groups[p]) groups[p] = [];
-      groups[p].push(g);
-    });
-    return groups;
+  // ── Upload handlers ─────────────────────────────────────────
+  const handleAvatarChange = async (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    if (file.size > 5 * 1024 * 1024) { setUploadError('La imagen debe ser menor a 5 MB'); return; }
+    try {
+      setUploadingAvatar(true);
+      setUploadError('');
+      await uploadProfilePicture(file);
+    } catch (err) {
+      setUploadError('Error al subir la foto. Verifica Firebase Storage.');
+    } finally {
+      setUploadingAvatar(false);
+    }
   };
 
+  const handleBannerChange = async (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    if (file.size > 10 * 1024 * 1024) { setUploadError('El banner debe ser menor a 10 MB'); return; }
+    try {
+      setUploadingBanner(true);
+      setUploadError('');
+      await uploadProfileBanner(file);
+    } catch (err) {
+      setUploadError('Error al subir el banner. Verifica Firebase Storage.');
+    } finally {
+      setUploadingBanner(false);
+    }
+  };
+
+  // ── Platform filter ──────────────────────────────────────────
   const filterByPlatform = (games) =>
     activePlatform === 'all' ? games : games.filter(g => (g.platform || 'PC') === activePlatform);
 
-  const GameGridCard = ({ game }) => (
-    <div className="pg-game-card" onClick={() => game.id && navigate(`/game/${game.id}`)}>
+  // ── Library Game Card ────────────────────────────────────────
+  const LibraryCard = ({ game }) => (
+    <div className="pg-game-card">
       <div className="pg-game-img-wrap">
         {game.image
           ? <img src={game.image} alt={game.title} className="pg-game-img" />
           : <div className="pg-game-img-placeholder"><Gamepad2 size={32} /></div>
         }
-        <div className="pg-game-overlay">
-          <ExternalLink size={16} />
-          <span>Ver juego</span>
-        </div>
         {game.platform && (
           <span
             className="pg-game-platform-badge"
@@ -90,6 +113,14 @@ const ProfilePage = () => {
         )}
       </div>
       <p className="pg-game-title">{game.title}</p>
+      {/* ── JUGAR AHORA button ── */}
+      <button
+        className="pg-play-btn"
+        onClick={() => game.id && navigate(`/game/${game.id}`)}
+      >
+        <Play size={13} fill="currentColor" />
+        Jugar ahora
+      </button>
     </div>
   );
 
@@ -112,14 +143,14 @@ const ProfilePage = () => {
         >
           Todos ({games.length})
         </button>
-        {PLATFORMS.filter(p => platforms.includes(p)).map(p => {
+        {PLATFORMS_LIST.filter(p => platforms.includes(p)).map(p => {
           const c = PLATFORM_COLORS[p];
           const count = games.filter(g => (g.platform || 'PC') === p).length;
           return (
             <button
               key={p}
               className={`pg-platform-tab ${activePlatform === p ? 'active' : ''}`}
-              style={activePlatform === p ? { background: c.bg, color: c.text, borderColor: c.bg } : {}}
+              style={activePlatform === p ? { background: c?.bg, color: c?.text, borderColor: c?.bg } : {}}
               onClick={() => setActivePlatform(p)}
             >
               {PLATFORM_ICONS[p]} {p} ({count})
@@ -130,33 +161,87 @@ const ProfilePage = () => {
     );
   };
 
+  const tabs = [
+    { id: 'library',  label: 'Mi Biblioteca',  icon: Library,     count: library.length },
+    { id: 'wishlist', label: 'Lista de deseos', icon: Heart,       count: wishlist.length },
+    { id: 'reviews',  label: 'Reseñas',         icon: Star,        count: 0 },
+  ];
+
   return (
     <div className="profile-page">
 
-      {/* ── HERO BANNER ── */}
-      <div className="pg-hero">
-        <div className="pg-hero-bg" />
-        <div className="pg-hero-inner container">
-          <div className="pg-avatar-wrap">
-            <img src={avatar} alt="Avatar" className="pg-avatar" />
-            <span className="pg-status-dot" title="En línea" />
-          </div>
-
-          <div className="pg-hero-info">
-            <h1 className="pg-name">{userProfile?.displayName || user.displayName || 'Jugador'}</h1>
-            <p className="pg-email">{user.email}</p>
-            <div className="pg-badges">
-              <span className="pg-badge pg-badge-member">Miembro</span>
-              {library.length > 0 && <span className="pg-badge pg-badge-buyer">Comprador</span>}
-              {library.length >= 5 && <span className="pg-badge pg-badge-collector">Coleccionista</span>}
+      {/* ── BANNER ── */}
+      <div className="pg-banner-wrap">
+        <div
+          className="pg-banner"
+          style={userProfile?.bannerURL ? { backgroundImage: `url(${userProfile.bannerURL})` } : {}}
+        >
+          {!userProfile?.bannerURL && (
+            <div className="pg-banner-placeholder">
+              <Upload size={20} />
+              <span>Sube un banner de perfil</span>
             </div>
-          </div>
+          )}
+        </div>
 
-          <div className="pg-hero-actions">
-            <button className="pg-btn-logout" onClick={handleLogout}>
-              <LogOut size={15} /> Cerrar sesión
-            </button>
+        {/* Banner upload button */}
+        <button
+          className="pg-banner-edit-btn"
+          onClick={() => bannerInputRef.current?.click()}
+          disabled={uploadingBanner}
+          title="Cambiar banner"
+        >
+          <Pencil size={14} />
+          {uploadingBanner ? 'Subiendo...' : 'Editar banner'}
+        </button>
+        <input
+          ref={bannerInputRef}
+          type="file"
+          accept="image/*"
+          style={{ display: 'none' }}
+          onChange={handleBannerChange}
+        />
+      </div>
+
+      {/* ── HERO ROW ── */}
+      <div className="pg-hero-row container">
+
+        {/* Avatar with upload overlay */}
+        <div className="pg-avatar-wrap">
+          <img src={avatar} alt="Avatar" className="pg-avatar" />
+          <span className="pg-status-dot" title="En línea" />
+          <button
+            className="pg-avatar-edit-btn"
+            onClick={() => avatarInputRef.current?.click()}
+            disabled={uploadingAvatar}
+            title="Cambiar foto"
+          >
+            <Camera size={14} />
+          </button>
+          <input
+            ref={avatarInputRef}
+            type="file"
+            accept="image/*"
+            style={{ display: 'none' }}
+            onChange={handleAvatarChange}
+          />
+        </div>
+
+        <div className="pg-hero-info">
+          <h1 className="pg-name">{userProfile?.displayName || user.displayName || 'Jugador'}</h1>
+          <p className="pg-email">{user.email}</p>
+          <div className="pg-badges">
+            <span className="pg-badge pg-badge-member">Miembro</span>
+            {library.length > 0 && <span className="pg-badge pg-badge-buyer">Comprador</span>}
+            {library.length >= 5 && <span className="pg-badge pg-badge-collector">Coleccionista</span>}
           </div>
+          {uploadError && <p className="pg-upload-error">{uploadError}</p>}
+        </div>
+
+        <div className="pg-hero-actions">
+          <button className="pg-btn-logout" onClick={handleLogout}>
+            <LogOut size={15} /> Cerrar sesión
+          </button>
         </div>
       </div>
 
@@ -184,7 +269,6 @@ const ProfilePage = () => {
       {/* ── MAIN CONTENT ── */}
       <div className="pg-main container">
 
-        {/* TABS */}
         <div className="pg-tabs">
           {tabs.map(tab => (
             <button
@@ -217,7 +301,7 @@ const ProfilePage = () => {
                   {activePlatform !== 'all' ? ` en ${activePlatform}` : ' en tu biblioteca'}
                 </p>
                 <div className="pg-game-grid">
-                  {filterByPlatform(library).map((game, i) => <GameGridCard key={i} game={game} />)}
+                  {filterByPlatform(library).map((game, i) => <LibraryCard key={i} game={game} />)}
                 </div>
               </>
             )}
@@ -242,7 +326,24 @@ const ProfilePage = () => {
                   {activePlatform !== 'all' ? ` en ${activePlatform}` : ' en tu lista de deseos'}
                 </p>
                 <div className="pg-game-grid">
-                  {filterByPlatform(wishlist).map((game, i) => <GameGridCard key={i} game={game} />)}
+                  {filterByPlatform(wishlist).map((game, i) => (
+                    <div key={i} className="pg-game-card" onClick={() => game.id && navigate(`/game/${game.id}`)}>
+                      <div className="pg-game-img-wrap">
+                        {game.image
+                          ? <img src={game.image} alt={game.title} className="pg-game-img" />
+                          : <div className="pg-game-img-placeholder"><Gamepad2 size={32} /></div>
+                        }
+                        <div className="pg-game-overlay"><ExternalLink size={16} /><span>Ver juego</span></div>
+                        {game.platform && (
+                          <span className="pg-game-platform-badge"
+                            style={{ background: PLATFORM_COLORS[game.platform]?.bg || '#444', color: PLATFORM_COLORS[game.platform]?.text || '#fff' }}>
+                            {PLATFORM_ICONS[game.platform]} {game.platform}
+                          </span>
+                        )}
+                      </div>
+                      <p className="pg-game-title">{game.title}</p>
+                    </div>
+                  ))}
                 </div>
               </>
             )}

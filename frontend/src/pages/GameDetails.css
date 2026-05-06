@@ -1,4 +1,52 @@
 /* =============================================
+   GAME DETAILS - Minimal Loading Screen
+   ============================================= */
+
+@keyframes gd-spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes gd-pulse-text {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 1; }
+}
+
+.gd-loading-screen {
+  min-height: 100vh;
+  background: #1a1a1e;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.gd-loading-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.gd-spinner-ring {
+  width: 48px;
+  height: 48px;
+  border: 3px solid rgba(0, 243, 255, 0.1);
+  border-top: 3px solid #00f3ff;
+  border-radius: 50%;
+  animation: gd-spin 1s linear infinite;
+  box-shadow: 0 0 15px rgba(0, 243, 255, 0.2);
+}
+
+.gd-loading-text {
+  color: #ffffff;
+  font-family: 'Outfit', sans-serif;
+  font-size: 1rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  animation: gd-pulse-text 2s ease-in-out infinite;
+}
+
+/* =============================================
    GAME DETAILS - Instant Gaming Style (Exact)
    ============================================= */
 .game-details-page {
@@ -204,6 +252,72 @@
 .add-cart-btn-secondary:hover {
   background: rgba(255,255,255,0.1);
   color: #fff;
+}
+
+/* ─── OWNED / JUGAR AHORA ─── */
+.owned-banner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 0 4px;
+  text-align: center;
+}
+
+.owned-banner-top {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.owned-check {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: rgba(76,175,80,0.15);
+  border: 1px solid rgba(76,175,80,0.4);
+  color: #4caf50;
+  font-size: 0.95rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.owned-label {
+  color: #4caf50;
+  font-size: 0.95rem;
+  font-weight: 600;
+  font-family: 'Inter', sans-serif;
+}
+
+.play-now-btn {
+  width: 100%;
+  padding: 14px;
+  border-radius: 8px;
+  border: none;
+  background: linear-gradient(90deg, #1fcf65, #12a149);
+  color: #fff;
+  font-size: 1.1rem;
+  font-weight: 800;
+  font-family: 'Inter', sans-serif;
+  cursor: pointer;
+  transition: all 0.25s;
+  letter-spacing: 0.5px;
+  box-shadow: 0 4px 15px rgba(31, 207, 101, 0.25);
+  text-transform: uppercase;
+}
+.play-now-btn:hover {
+  background: linear-gradient(90deg, #18b556, #0e8a3d);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(31, 207, 101, 0.4);
+}
+
+.owned-sub {
+  color: #556;
+  font-size: 0.78rem;
+  margin: 0;
+  font-family: 'Inter', sans-serif;
 }
 
 /* =============================================

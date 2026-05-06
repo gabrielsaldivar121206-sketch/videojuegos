@@ -34,6 +34,19 @@ const PLATFORMS = [
   { name: 'Nintendo', icon: <NintendoLogo /> },
 ];
 
+const scrollToSection = (sectionId, navigateFn) => {
+  // Navigate to home with the hash - the browser will handle scrolling to the element
+  if (location.pathname !== '/') {
+    navigateFn(`/#${sectionId}`);
+  } else {
+    // Already on home page, use smooth scroll
+    const element = document.getElementById(sectionId);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  }
+};
+
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
@@ -145,11 +158,11 @@ const Navbar = () => {
           {/* CENTER */}
           <div className="navbar-center">
             <div className="top-mini-links">
-              <a href="/#store">Tendencias</a>
-              <a href="/#featured">Reservas</a>
-              <a href="/#community">Próximas salidas</a>
-              <a href="/#support">Blog</a>
-              <a href="/#support">Soporte 24/7</a>
+              <a onClick={() => scrollToSection('store', navigate)}>Tendencias</a>
+              <a onClick={() => scrollToSection('reservas', navigate)}>Reservas</a>
+              <a onClick={() => scrollToSection('proximas-salidas', navigate)}>Próximas salidas</a>
+              <a onClick={() => scrollToSection('blog', navigate)}>Blog</a>
+              <a onClick={() => scrollToSection('soporte', navigate)}>Soporte 24/7</a>
             </div>
 
             {/* Platform bar OR Search bar - animated switch */}

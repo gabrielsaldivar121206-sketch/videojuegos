@@ -198,8 +198,9 @@
 .admin-filters-bar {
   display: flex;
   gap: 12px;
+  flex-wrap: wrap;
 }
-.search-box, .filter-box {
+.search-box, .filter-box, .sort-box {
   background: var(--ad-card);
   border: 1px solid var(--ad-border);
   border-radius: 10px;
@@ -209,18 +210,19 @@
   height: 44px;
   transition: all 0.2s;
 }
-.search-box:focus-within, .filter-box:focus-within {
+.search-box:focus-within, .filter-box:focus-within, .sort-box:focus-within {
   border-color: rgba(0,243,255,0.35);
   box-shadow: 0 0 0 3px rgba(0,243,255,0.05);
 }
-.search-box { flex: 1; }
-.filter-box { min-width: 190px; }
-.search-icon, .filter-icon {
+.search-box { flex: 1; min-width: 200px; }
+.filter-box { min-width: 150px; }
+.sort-box { min-width: 180px; }
+.search-icon, .filter-icon, .sort-icon {
   color: var(--ad-muted);
   margin-right: 10px;
   flex-shrink: 0;
 }
-.search-box input, .filter-box select {
+.search-box input, .filter-box select, .sort-box select {
   background: transparent;
   border: none;
   color: var(--ad-text);
@@ -229,8 +231,8 @@
   width: 100%;
   outline: none;
 }
-.filter-box select { cursor: pointer; }
-.filter-box select option { background: #1a1b22; color: #fff; }
+.filter-box select, .sort-box select { cursor: pointer; }
+.filter-box select option, .sort-box select option { background: #1a1b22; color: #fff; }
 
 /* --- TABLE AREA --- */
 .admin-content-area {

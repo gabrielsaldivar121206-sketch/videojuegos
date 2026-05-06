@@ -11,7 +11,7 @@ const CustomCursor = () => {
   useEffect(() => {
     // Disable entirely on touch screens or small viewports
     const isTouch = window.matchMedia('(pointer: coarse)').matches;
-    const isMobile = window.innerWidth <= 900;
+    const isMobile = window.innerWidth <= 1024; // Increased from 900 to 1024 to cover more tablets
     if (isTouch || isMobile) return;
 
     let targetX = -100; // start off-screen so no jump on load

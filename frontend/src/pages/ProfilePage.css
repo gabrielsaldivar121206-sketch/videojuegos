@@ -1,43 +1,70 @@
-/* ================================================
-   PROFILE PAGE — Premium redesign
-   ================================================ */
-.profile-page {
-  min-height: 100vh;
-  background: #0b0c10;
-}
-
-/* ── HERO BANNER ── */
-.pg-hero {
+/* ── BANNER ── */
+.pg-banner-wrap {
   position: relative;
-  padding-top: 80px;
+  width: 100%;
+  height: 220px;
   overflow: hidden;
+  background: #0f1015;
+  margin-top: 60px; /* clear fixed navbar */
 }
 
-.pg-hero-bg {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    160deg,
-    rgba(0,229,255,0.06) 0%,
-    rgba(0,0,0,0) 50%,
-    rgba(0,229,255,0.03) 100%
-  );
-  pointer-events: none;
-}
-.pg-hero-bg::before {
-  content: '';
-  position: absolute;
-  top: 0; left: 0; right: 0;
-  height: 2px;
-  background: linear-gradient(90deg, transparent, rgba(0,229,255,0.3), transparent);
-}
-
-.pg-hero-inner {
+.pg-banner {
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  background-color: #0f1015;
   display: flex;
   align-items: center;
-  gap: 28px;
-  padding: 40px 20px 36px;
+  justify-content: center;
+  transition: filter 0.3s;
+}
+.pg-banner-wrap:hover .pg-banner {
+  filter: brightness(0.8);
+}
+
+.pg-banner-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  color: #333;
+  font-size: 0.85rem;
+  pointer-events: none;
+}
+
+.pg-banner-edit-btn {
+  position: absolute;
+  bottom: 12px;
+  right: 16px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(0,0,0,0.65);
+  border: 1px solid rgba(255,255,255,0.15);
+  color: #ccc;
+  padding: 6px 14px;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  backdrop-filter: blur(4px);
+}
+.pg-banner-edit-btn:hover {
+  background: rgba(0,229,255,0.15);
+  border-color: rgba(0,229,255,0.3);
+  color: #00e5ff;
+}
+
+/* ── HERO ROW (avatar + info + logout) ── */
+.pg-hero-row {
+  display: flex;
+  align-items: flex-end;
+  gap: 24px;
+  padding: 0 20px 28px;
+  margin-top: -48px; /* overlap banner */
   position: relative;
+  z-index: 2;
 }
 
 /* Avatar */
@@ -51,15 +78,16 @@
   height: 96px;
   border-radius: 50%;
   object-fit: cover;
-  border: 3px solid rgba(0,229,255,0.5);
-  box-shadow: 0 0 24px rgba(0,229,255,0.2);
+  border: 3px solid #0b0c10;
+  box-shadow: 0 0 0 3px rgba(0,229,255,0.45), 0 0 24px rgba(0,229,255,0.2);
   display: block;
+  background: #1a1b22;
 }
 
 .pg-status-dot {
   position: absolute;
-  bottom: 5px;
-  right: 5px;
+  bottom: 6px;
+  right: 6px;
   width: 14px;
   height: 14px;
   background: #4caf50;
@@ -68,9 +96,39 @@
   box-shadow: 0 0 8px rgba(76,175,80,0.6);
 }
 
+.pg-avatar-edit-btn {
+  position: absolute;
+  bottom: -2px;
+  left: -2px;
+  background: rgba(0,0,0,0.75);
+  border: 1px solid rgba(255,255,255,0.2);
+  color: #ccc;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
+  backdrop-filter: blur(4px);
+}
+.pg-avatar-edit-btn:hover {
+  background: rgba(0,229,255,0.2);
+  border-color: #00e5ff;
+  color: #00e5ff;
+}
+
 /* Info */
 .pg-hero-info {
   flex: 1;
+  padding-bottom: 4px;
+}
+
+.pg-upload-error {
+  color: #ff5370;
+  font-size: 0.8rem;
+  margin-top: 8px;
 }
 
 .pg-name {
@@ -103,24 +161,12 @@
   text-transform: uppercase;
 }
 
-.pg-badge-member {
-  background: rgba(0,229,255,0.1);
-  color: #00e5ff;
-  border: 1px solid rgba(0,229,255,0.25);
-}
-.pg-badge-buyer {
-  background: rgba(76,175,80,0.1);
-  color: #4caf50;
-  border: 1px solid rgba(76,175,80,0.25);
-}
-.pg-badge-collector {
-  background: rgba(255,215,0,0.08);
-  color: #ffd700;
-  border: 1px solid rgba(255,215,0,0.2);
-}
+.pg-badge-member   { background: rgba(0,229,255,0.1); color: #00e5ff; border: 1px solid rgba(0,229,255,0.25); }
+.pg-badge-buyer    { background: rgba(76,175,80,0.1); color: #4caf50; border: 1px solid rgba(76,175,80,0.25); }
+.pg-badge-collector{ background: rgba(255,215,0,0.08); color: #ffd700; border: 1px solid rgba(255,215,0,0.2); }
 
 /* Logout */
-.pg-hero-actions { margin-left: auto; }
+.pg-hero-actions { margin-left: auto; padding-bottom: 4px; }
 
 .pg-btn-logout {
   display: flex;
@@ -140,6 +186,32 @@
 .pg-btn-logout:hover {
   background: rgba(255,83,112,0.1);
   border-color: rgba(255,83,112,0.5);
+}
+
+/* ── PLAY BUTTON on library cards ── */
+.pg-play-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  width: 100%;
+  margin-top: 8px;
+  padding: 8px 0;
+  background: linear-gradient(90deg, rgba(0,229,255,0.15), rgba(0,160,200,0.15));
+  border: 1px solid rgba(0,229,255,0.25);
+  color: #00e5ff;
+  border-radius: 7px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  font-family: 'Inter', sans-serif;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.pg-play-btn:hover {
+  background: linear-gradient(90deg, rgba(0,229,255,0.3), rgba(0,160,200,0.3));
+  border-color: #00e5ff;
+  box-shadow: 0 0 12px rgba(0,229,255,0.2);
+  transform: translateY(-1px);
 }
 
 /* ── STATS BAR ── */
@@ -452,8 +524,8 @@
 
 /* ── RESPONSIVE ── */
 @media (max-width: 768px) {
-  .pg-hero { padding-top: 120px; }
-  .pg-hero-inner { flex-wrap: wrap; gap: 16px; }
+  .pg-banner-wrap { height: 160px; margin-top: 100px; }
+  .pg-hero-row { flex-wrap: wrap; gap: 16px; margin-top: -40px; padding: 0 16px 20px; }
   .pg-hero-actions { margin-left: 0; width: 100%; }
   .pg-name { font-size: 1.5rem; }
   .pg-stats-bar { flex-wrap: wrap; gap: 0; padding: 0 10px; }

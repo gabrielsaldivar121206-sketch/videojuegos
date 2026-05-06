@@ -18,8 +18,8 @@ const PLATFORM_META = {
     giftCardDesc: 'Nuestras tarjetas regalo de Steam, FC Points, Valorant Points, Roblox y muchas más',
     subscriptionTitle: 'Suscripciones PC',
     subscriptionDesc: 'Ofertas en suscripciones para PC. Xbox Game Pass, EA Pro y muchas más.',
-    // Cyberpunk 2077 — icónico de PC gaming
-    banner: 'https://cdn.akamai.steamstatic.com/steam/apps/1091500/library_hero.jpg',
+    // Red Dead Redemption 2 — icónico de PC gaming
+    banner: 'https://cdn.akamai.steamstatic.com/steam/apps/1174180/library_hero.jpg',
     accentColor: '#00e5ff',
   },
   PlayStation: {
@@ -149,7 +149,14 @@ const PlatformPage = () => {
   const cards    = giftCards[platform]    || [];
   const upcoming = upcomingGames[platform] || [];
 
-  const heroGame = allGames[0];
+  const heroGameTitles = {
+    PC: "Red Dead Redemption 2",
+    PlayStation: "God of War Ragnarök",
+    Xbox: "Forza Horizon 5",
+    Nintendo: "Hades"
+  };
+  const targetTitle = heroGameTitles[platform];
+  const heroGame = allGames.find(g => g.title === targetTitle) || allGames[0];
 
   const getFinalPrice = g => g.discount > 0 ? g.price * (1 - g.discount / 100) : g.price;
 
@@ -215,7 +222,12 @@ const PlatformPage = () => {
             className="pp-hero-banner"
             onClick={() => navigate(`/game/${heroGame.id}`)}
           >
-            <img src={heroGame.image} alt={heroGame.title} className="pp-hero-img" />
+            <img 
+              src={heroGame.image.replace('capsule_616x353.jpg', 'library_hero.jpg').replace('capsule_616x353', 'library_hero')} 
+              alt={heroGame.title} 
+              className="pp-hero-img"
+              onError={(e) => { e.target.src = heroGame.image; }}
+            />
             <div className="pp-hero-overlay">
               <div className="pp-hero-info">
                 <h2 className="pp-hero-title">{heroGame.title}</h2>
