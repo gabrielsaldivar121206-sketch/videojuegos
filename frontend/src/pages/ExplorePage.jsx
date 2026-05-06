@@ -3,7 +3,7 @@ import { useSearchParams, useNavigate } from 'react-router-dom';
 import { collection, getDocs } from 'firebase/firestore';
 import { db } from '../firebase';
 import GameCard from '../components/GameCard';
-import { featuredGames as fallbackGames } from '../data/games';
+import { featuredGames as fallbackGames, cleanGameImage } from '../data/games';
 import { ChevronDown, SlidersHorizontal, X } from 'lucide-react';
 import './ExplorePage.css';
 
@@ -35,7 +35,7 @@ const ExplorePage = () => {
       try {
         const querySnapshot = await getDocs(collection(db, 'games'));
         if (!querySnapshot.empty) {
-          setGames(querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })));
+          setGames(querySnapshot.docs.map(doc => cleanGameImage({ id: doc.id, ...doc.data() })));
         } else {
           setGames(fallbackGames);
         }

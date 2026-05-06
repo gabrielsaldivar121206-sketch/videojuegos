@@ -22,6 +22,7 @@ import SuccessPage from './pages/SuccessPage';
 import NotFound from './pages/NotFound';
 import ExplorePage from './pages/ExplorePage';
 import PlatformPage from './pages/PlatformPage';
+import CustomCursor from './components/CustomCursor';
 import { useSearchParams } from 'react-router-dom';
 
 const Home = () => {
@@ -33,10 +34,10 @@ const Home = () => {
       {!query && <Hero />}
       <GameGrid />
       {!query && <TrustBar />}
-      {!query && <GameSlider title="Reservas" startIndex={8} endIndex={11} />}
-      {!query && <GameSlider title="Te recomendamos" startIndex={11} endIndex={14} />}
+      {!query && <GameSlider title="Reservas" />}
+      {!query && <GameSlider title="Te recomendamos" />}
       {!query && <BigReviewBanner />}
-      {!query && <GameSlider title="Más vendidos" startIndex={4} endIndex={7} />}
+      {!query && <GameSlider title="Más vendidos" />}
       {!query && <LatestReviews />}
       {!query && <TopIndieBanner />}
     </>
@@ -51,6 +52,7 @@ const AppContent = () => {
 
   return (
     <div className="app-layout">
+      <CustomCursor />
       {!isLayoutHiddenRoute && <Navbar />}
       <CartDrawer />
       <main className="main-content">

@@ -3,7 +3,7 @@ import { useSearchParams } from 'react-router-dom';
 import { collection, getDocs } from 'firebase/firestore';
 import { db } from '../firebase';
 import GameCard from './GameCard';
-import { featuredGames as fallbackGames } from '../data/games';
+import { featuredGames as fallbackGames, cleanGameImage } from '../data/games';
 import './GameGrid.css';
 
 const CATEGORIES = ["Todos", "Action", "RPG", "Sci-Fi", "Strategy", "Racing", "Horror"];
@@ -19,7 +19,7 @@ const GameGrid = () => {
       try {
         const querySnapshot = await getDocs(collection(db, "games"));
         if (!querySnapshot.empty) {
-          const gamesList = querySnapshot.docs.map(doc => ({
+          const gamesList = querySnapshot.docs.map(doc => cleanGameImage({
             id: doc.id,
             ...doc.data()
           }));

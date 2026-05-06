@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { collection, getDocs } from 'firebase/firestore';
 import { db } from '../firebase';
+import { cleanGameImage } from '../data/games';
 import GameCard from '../components/GameCard';
 import { ChevronLeft, ChevronRight, Zap, Flame } from 'lucide-react';
 import Hero from '../components/Hero';
@@ -20,7 +21,7 @@ const Home = () => {
     const fetchGames = async () => {
       try {
         const querySnapshot = await getDocs(collection(db, "games"));
-        const gamesList = querySnapshot.docs.map(doc => ({
+        const gamesList = querySnapshot.docs.map(doc => cleanGameImage({
           id: doc.id,
           ...doc.data()
         }));

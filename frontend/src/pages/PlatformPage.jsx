@@ -1,10 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
 import {
   featuredGames, giftCards, upcomingGames,
-  gameCategories, PLATFORM_COLORS,
+  gameCategories, PLATFORM_COLORS, cleanGameImage
 } from '../data/games';
+import { collection, getDocs } from 'firebase/firestore';
+import { db } from '../firebase';
 import { ShoppingCart, ChevronRight, Gift, Star, Zap, Clock, Tag } from 'lucide-react';
 import './PlatformPage.css';
 
@@ -49,8 +51,8 @@ const PLATFORM_META = {
     giftCardDesc: 'Tarjetas Nintendo eShop y suscripciones Nintendo Online al mejor precio',
     subscriptionTitle: 'Suscripciones Nintendo',
     subscriptionDesc: 'Nintendo Switch Online Individual y Familiar al mejor precio.',
-    // Stardew Valley — uno de los más jugados en Nintendo Switch
-    banner: 'https://cdn.akamai.steamstatic.com/steam/apps/413150/library_hero.jpg',
+    // Mario Kart 8 Deluxe — bannner horizontal oficial de Nintendo
+    banner: 'https://assets.nintendo.com/image/upload/c_fill,w_1200/ncom/en_US/games/switch/m/mario-kart-8-deluxe-switch/hero',
     accentColor: '#E4000F',
   },
 };
@@ -118,13 +120,34 @@ const PlatformPage = () => {
   const { addToCart } = useCart();
   const [activeSubCat, setActiveSubCat] = useState(null);
   const [sortBy, setSortBy]             = useState('relevance');
+  const [allGames, setAllGames]         = useState([]);
+  const [loadingGames, setLoadingGames] = useState(true);
 
   const meta   = PLATFORM_META[platform] || PLATFORM_META['PC'];
   const colors = PLATFORM_COLORS[platform] || PLATFORM_COLORS['PC'];
 
-  const allGames   = featuredGames.filter(g => g.platform === platform);
-  const cards      = giftCards[platform]   || [];
-  const upcoming   = upcomingGames[platform] || [];
+  // Fetch from Firebase, fallback to local data
+  useEffect(() => {
+    const fetchGames = async () => {
+      try {
+        const querySnapshot = await getDocs(collection(db, 'games'));
+        if (!querySnapshot.empty) {
+          const all = querySnapshot.docs.map(doc => cleanGameImage({ id: doc.id, ...doc.data() }));
+          setAllGames(all.filter(g => g.platform === platform));
+        } else {
+          setAllGames(featuredGames.filter(g => g.platform === platform));
+        }
+      } catch {
+        setAllGames(featuredGames.filter(g => g.platform === platform));
+      } finally {
+        setLoadingGames(false);
+      }
+    };
+    fetchGames();
+  }, [platform]);
+
+  const cards    = giftCards[platform]    || [];
+  const upcoming = upcomingGames[platform] || [];
 
   const heroGame = allGames[0];
 
@@ -135,10 +158,9 @@ const PlatformPage = () => {
   else if (sortBy === 'price_desc') games.sort((a, b) => getFinalPrice(b) - getFinalPrice(a));
   else if (sortBy === 'discount')   games.sort((a, b) => (b.discount || 0) - (a.discount || 0));
 
-  const bestSellers = [...games].sort((a, b) => (b.discount || 0) - (a.discount || 0)).slice(0, 6);
-  const recentGames = [...games].filter(g => g.isNew).slice(0, 6).length
-    ? games.filter(g => g.isNew)
-    : games.slice(0, 6);
+  // Show max 10 games (2 rows of 5) in the platform best sellers section
+  const bestSellers = [...games].sort((a, b) => (b.discount || 0) - (a.discount || 0)).slice(0, 10);
+  const recentGames = games.filter(g => g.isNew).length > 0 ? games.filter(g => g.isNew) : games.slice(0, 6);
 
   return (
     <div className="platform-page">

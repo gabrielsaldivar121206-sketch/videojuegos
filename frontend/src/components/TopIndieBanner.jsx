@@ -1,24 +1,33 @@
 import React, { useState, useEffect } from 'react';
 import { collection, getDocs } from 'firebase/firestore';
 import { db } from '../firebase';
+import { cleanGameImage } from '../data/games';
 import GameCard from './GameCard';
 import { ChevronRight } from 'lucide-react';
 import './TopIndieBanner.css';
 
-const TopIndieBanner = () => {
+const TopIndieBanner = ({ customGames }) => {
   const [games, setGames] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    if (customGames) {
+      setGames(customGames);
+      setLoading(false);
+      return;
+    }
+
     const fetchGames = async () => {
       try {
         const querySnapshot = await getDocs(collection(db, "games"));
-        const gamesList = querySnapshot.docs.map(doc => ({
+        const gamesList = querySnapshot.docs.map(doc => cleanGameImage({
           id: doc.id,
           ...doc.data()
         }));
-        // Tomamos 4 juegos para el grid 2x2
-        setGames(gamesList.slice(2, 6));
+        
+        // Filter for Nintendo games
+        const indies = gamesList.filter(g => g.platform === 'Nintendo').slice(0, 4);
+        setGames(indies.length > 0 ? indies : gamesList.slice(0, 4));
         setLoading(false);
       } catch (error) {
         console.error("Error al obtener juegos indie:", error);
@@ -27,7 +36,7 @@ const TopIndieBanner = () => {
     };
 
     fetchGames();
-  }, []);
+  }, [customGames]);
 
   if (loading || games.length === 0) return null;
 

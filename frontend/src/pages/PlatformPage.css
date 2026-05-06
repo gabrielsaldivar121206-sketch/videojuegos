@@ -47,7 +47,7 @@
 .pp-header-content {
   position: relative;
   z-index: 2;
-  padding-top: 120px;
+  padding-top: 160px;  /* clears the fixed navbar (~100px) + extra breathing room */
   padding-bottom: 0;
 }
 
@@ -606,8 +606,8 @@
 
 /* ── RESPONSIVE ── */
 @media (max-width: 768px) {
-  .pp-header { min-height: 260px; }
-  .pp-header-content { padding-top: 80px; }
+  .pp-header { min-height: 420px; }
+  .pp-header-content { padding-top: 200px; } /* pushes text below navbar + shows banner image */
   .pp-title { font-size: 2rem; }
   .pp-header-badge { font-size: 0.68rem; }
   .pp-hero-banner { aspect-ratio: 16/9; }

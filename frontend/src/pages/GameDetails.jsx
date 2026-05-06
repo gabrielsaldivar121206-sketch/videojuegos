@@ -8,6 +8,7 @@ import {
 } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
+import { featuredGames, giftCards, upcomingGames, heroGame, cleanGameImage } from '../data/games';
 import './GameDetails.css';
 
 /* ──────────────────────────────────────────────
@@ -19,6 +20,21 @@ const SteamIcon = () => (
   </svg>
 );
 
+const getPlatformIcon = (platform) => {
+  const p = (platform || '').toLowerCase();
+  if (p.includes('pc')) return <SteamIcon />;
+  return <Gamepad2 size={16} />;
+};
+
+const getPlatformLabel = (platform) => {
+  const p = (platform || '').toLowerCase();
+  if (p.includes('pc')) return 'Steam';
+  if (p.includes('playstation') || p.includes('ps4') || p.includes('ps5')) return 'PSN';
+  if (p.includes('xbox')) return 'Xbox Live';
+  if (p.includes('nintendo') || p.includes('switch')) return 'Nintendo eShop';
+  return platform || 'Steam';
+};
+
 /* ──────────────────────────────────────────────
    Feature icons list
    ────────────────────────────────────────────── */
@@ -27,11 +43,11 @@ const FEATURES = [
   { icon: <Wifi size={22} />, label: 'JcJ en línea' },
   { icon: <Monitor size={22} />, label: 'JcJ a pantalla compartida' },
   { icon: <Users size={22} />, label: 'Multijugador multiplataforma' },
-  { icon: <Trophy size={22} />, label: 'Logros de Steam' },
-  { icon: <Gamepad2 size={22} />, label: 'Cromos de Steam' },
-  { icon: <Cloud size={22} />, label: 'Steam Cloud' },
+  { icon: <Trophy size={22} />, label: 'Logros' },
+  { icon: <Gamepad2 size={22} />, label: 'Cromos / Coleccionables' },
+  { icon: <Cloud size={22} />, label: 'Guardado en la nube' },
   { icon: <Gamepad2 size={22} />, label: 'Préstamo familiar' },
-  { icon: <Cpu size={22} />, label: 'Compatible con mando de Xbox' },
+  { icon: <Cpu size={22} />, label: 'Compatible con mando' },
 ];
 
 /* ──────────────────────────────────────────────
@@ -83,7 +99,7 @@ const GameDetails = () => {
         const docSnap = await getDoc(docRef);
 
         if (docSnap.exists()) {
-          setGame({ id: docSnap.id, ...docSnap.data() });
+          setGame(cleanGameImage({ id: docSnap.id, ...docSnap.data() }));
           return;
         }
 
@@ -94,8 +110,23 @@ const GameDetails = () => {
           d.data().title?.toLowerCase().replace(/\s+/g, '-') === id.toLowerCase()
         );
 
-        if (found) setGame({ id: found.id, ...found.data() });
-        else setError(true);
+        if (found) {
+          setGame(cleanGameImage({ id: found.id, ...found.data() }));
+        } else {
+          const allLocalGames = [
+            ...featuredGames,
+            ...(Object.values(giftCards).flat()),
+            ...(Object.values(upcomingGames).flat()),
+            heroGame
+          ];
+          const localFound = allLocalGames.find(g => 
+            String(g.id) === String(id) || 
+            g.title?.toLowerCase().replace(/\s+/g, '-') === id.toLowerCase()
+          );
+          
+          if (localFound) setGame(localFound);
+          else setError(true);
+        }
       } catch (err) {
         console.error(err);
         setError(true);
@@ -197,9 +228,9 @@ const GameDetails = () => {
         {/* Purchase Card */}
         <div className="purchase-card-glass-exact">
           <div className="card-top-section">
-            <h1 className="game-title-ig-exact">{game.title} - PC (Steam)</h1>
+            <h1 className="game-title-ig-exact">{game.title} - {game.platform ? game.platform : 'PC'}</h1>
             <div className="platform-pills-exact">
-              <span><SteamIcon /> Steam</span>
+              <span>{getPlatformIcon(game.platform)} {getPlatformLabel(game.platform)}</span>
               <span><Check size={12} className="icon-green" /> En stock</span>
               <span><Check size={12} className="icon-green" /> Descarga digital</span>
             </div>

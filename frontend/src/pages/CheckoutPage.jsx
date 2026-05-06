@@ -85,7 +85,7 @@ const CheckoutPage = () => {
                 <img src={item.image} alt={item.title} className="checkout-item-img" />
                 <div className="checkout-item-info">
                   <p className="checkout-item-title">{item.title}</p>
-                  <p className="checkout-item-platform">PC (Steam) · Descarga digital</p>
+                  <p className="checkout-item-platform">{item.platform || 'PC'} · Descarga digital</p>
                   {item.discount > 0 && (
                     <span className="checkout-discount-badge">-{item.discount}%</span>
                   )}
@@ -115,7 +115,7 @@ const CheckoutPage = () => {
                   <img src={game.image} alt={game.title} className="checkout-item-img" style={{ width: '100px', height: '60px', objectFit: 'cover' }} />
                   <div className="checkout-item-info">
                     <p className="checkout-item-title" style={{ fontSize: '0.95rem' }}>{game.title}</p>
-                    <p className="checkout-item-platform">Steam</p>
+                    <p className="checkout-item-platform">{game.platform || 'PC'}</p>
                      <p style={{ marginTop: '6px', color: '#fff', fontWeight: '500', fontSize: '0.9rem' }}>S/ {recPrice}</p>
                   </div>
                   <button className="rec-add-btn" onClick={() => addToCart(game)} style={{

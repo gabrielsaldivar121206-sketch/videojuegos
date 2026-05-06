@@ -23,7 +23,7 @@ const SuccessPage = () => {
           textAlign: 'left'
         }}>
           <h3 style={{ margin: '0 0 15px', color: '#00e5ff', display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <Download size={18} /> Tus Claves de Producto (Steam)
+            <Download size={18} /> Tus Claves de Producto Digital
           </h3>
           <p style={{ margin: '0 0 5px', color: '#888' }}>Juego adquirido:</p>
           <div style={{

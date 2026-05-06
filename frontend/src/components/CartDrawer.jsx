@@ -50,7 +50,7 @@ const CartDrawer = () => {
                     <img src={item.image} alt={item.title} className="cart-item-img" />
                     <div className="cart-item-info">
                       <h4>{item.title}</h4>
-                      <p className="cart-item-platform">PC (Steam)</p>
+                      <p className="cart-item-platform">{item.platform || 'PC'}</p>
                       <p className="cart-item-price">S/ {finalPrice}</p>
                     </div>
                     <button className="cart-delete-btn" onClick={() => removeFromCart(item.id)} title="Eliminar del carrito">

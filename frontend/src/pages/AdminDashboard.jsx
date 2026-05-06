@@ -3,6 +3,7 @@ import { collection, getDocs, deleteDoc, doc, addDoc, updateDoc } from 'firebase
 import { db } from '../firebase';
 import { ShieldAlert, Trash2, Plus, Edit, Search, Filter, LayoutDashboard, Package, Settings, LogOut, Menu, X } from 'lucide-react';
 import GameFormModal from '../components/GameFormModal';
+import { featuredGames } from '../data/games';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import './AdminDashboard.css';
@@ -57,6 +58,33 @@ const AdminDashboard = () => {
       setEditingGame(null);
     } catch (error) {
       console.error("Error al guardar:", error);
+    }
+  };
+
+  const handleSeedDatabase = async () => {
+    if (!window.confirm("¡ATENCIÓN! Esto borrará todos los juegos actuales y subirá los 81 juegos curados (PC, PlayStation, Xbox, Nintendo) con imágenes en alta calidad. ¿Estás seguro?")) return;
+    
+    try {
+      setLoading(true);
+      // Delete all existing games
+      for (const game of games) {
+        await deleteDoc(doc(db, "games", game.id));
+      }
+      
+      // Add all featured games
+      for (const game of featuredGames) {
+        // Remove the static ID so Firebase generates a new one, or keep it, doesn't matter since addDoc generates one.
+        const { id, ...gameData } = game; 
+        await addDoc(collection(db, 'games'), gameData);
+      }
+      
+      alert("¡Base de datos actualizada con éxito con 40 juegos HD!");
+      await fetchGames();
+    } catch (error) {
+      console.error("Error seeding:", error);
+      alert("Hubo un error. Revisa la consola.");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -121,9 +149,14 @@ const AdminDashboard = () => {
               <p>{games.length} juegos en total</p>
             </div>
           </div>
-          <button className="btn-add-game" onClick={() => { setEditingGame(null); setShowModal(true); }}>
-            <Plus size={18} /> Añadir Juego
-          </button>
+          <div style={{ display: 'flex', gap: '10px' }}>
+            <button className="btn-add-game" onClick={handleSeedDatabase} style={{ background: '#e11d48' }}>
+              <ShieldAlert size={18} /> Recrear DB
+            </button>
+            <button className="btn-add-game" onClick={() => { setEditingGame(null); setShowModal(true); }}>
+              <Plus size={18} /> Añadir Juego
+            </button>
+          </div>
         </header>
 
         <div className="admin-filters-bar">
